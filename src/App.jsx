@@ -825,7 +825,7 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline}){
                 <div style={{width:34,height:34,borderRadius:10,background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Cormorant Garamond',serif",fontSize:13,color:"#C62828",flexShrink:0}}>{s.initials}</div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>{s.client}</div>
-                  <div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>Départ · {s.checkOut}{s.villa?` · ${s.villa}`:""}</div>
+                  <div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>Départ · {s.checkOut}{s.villa?" · "+s.villa:""}</div>
                 </div>
               </div>
             </div>
@@ -841,7 +841,7 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline}){
                 <div style={{flex:1}}>
                   <div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>{s.client}</div>
                   <div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>
-                    {s.daysLeft===1?"Départ demain":"Départ "} · {s.checkOut}{s.villa?` · ${s.villa}`:""}
+                    {s.daysLeft===1?"Départ demain":"Départ "}{" · "}{s.checkOut}{s.villa?" · "+s.villa:""}
                   </div>
                 </div>
               </div>
@@ -902,7 +902,7 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline}){
               </div>
               <div style={{textAlign:"right",flexShrink:0}}>
                 <div style={{fontSize:10,padding:"4px 8px",borderRadius:6,background:s.daysLeft===0?"#FFEBEE":s.daysLeft<=2?"#FFF8E1":"rgba(76,175,80,0.08)",color:s.daysLeft===0?"#C62828":s.daysLeft<=2?"#C9A96E":"#2E7D32",fontWeight:400,letterSpacing:".06em"}}>
-                  {s.daysLeft===0?"Départ auj.":s.daysLeft<=2?`J-${s.daysLeft}`:"En séjour"}
+                  {s.daysLeft===0?"Départ auj.":s.daysLeft<=2?"J-"+s.daysLeft:"En séjour"}
                 </div>
               </div>
             </div>
@@ -1766,7 +1766,7 @@ function Questionnaire({onComplete, onClose}){
   </div>;
 }
 
-function ResidentApp({onNotif, bookings=[]}{
+function ResidentApp({onNotif, bookings=[]}){
   const [tab,setTab]=useState("home");
   const [chat,setChat]=useState(false);
   const [sheet,setSheet]=useState(null);
