@@ -1220,7 +1220,7 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline, onLogout, clientPr
           <div className="stat"><div className="stat-val">9.9</div><div className="stat-lbl">Note</div></div>
         </div>
 
-        {/* Alertes entrées/sorties */}
+{/* Alertes entrées/sorties */}
         {(today.length>0||soon.length>0)&&<>
           <div className="sec"><div className="sec-title">Alertes séjours</div><div className="sec-line"><div className="ocre-bar"/></div></div>
           {today.map((s,i)=>(
@@ -1273,32 +1273,35 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline, onLogout, clientPr
                 </div>
                 <div style={{fontSize:9,color:"rgba(227,193,145,0.6)"}}>{n.time}</div>
               </div>
-            ):
-            <div className="notif-hdr">
-              <span style={{fontSize:14}}>🔔</span>
-              <div className="notif-hdr-title">{n.client}</div>
-              <div style={{marginLeft:"auto",fontSize:9,color:"rgba(227,193,145,0.6)"}}>{n.time}</div>
-            </div>
-            <div className="notif-body">
-              <div className="notif-service">{n.service}</div>
-              {n.recap?.length>0&&<div className="notif-detail">
-                {n.recap.map((r,j)=>(
-                  <div className="notif-detail-row" key={j}>
-                    <span className="notif-detail-label">{r.l}</span>
-                    <span className="notif-detail-val">{r.v}</span>
-                  </div>
-                ))}
-              </div>}
-              {n.status==="pending"&&<div className="notif-actions">
-                <button className="notif-btn notif-accept" onClick={()=>confirmNotif(n.id)}>✓ Confirmer</button>
-                <button className="notif-btn notif-decline" onClick={()=>declineNotif(n.id)}>Décliner</button>
-              </div>}
-              {n.status==="accepted"&&<div style={{marginTop:10,display:"flex",alignItems:"center",gap:6}}>
-                <div style={{width:6,height:6,borderRadius:"50%",background:"#4CAF50"}}/>
-                <span style={{fontSize:10,color:"#2E7D32",letterSpacing:".06em"}}>Confirmé · Visible par le client</span>
-              </div>}
-              {n.status==="declined"&&<div style={{marginTop:10,fontSize:10,color:"#9A8F7E",letterSpacing:".06em"}}>Demande déclinée</div>}
-            </div>}
+            ):(
+              <>
+                <div className="notif-hdr">
+                  <span style={{fontSize:14}}>🔔</span>
+                  <div className="notif-hdr-title">{n.client}</div>
+                  <div style={{marginLeft:"auto",fontSize:9,color:"rgba(227,193,145,0.6)"}}>{n.time}</div>
+                </div>
+                <div className="notif-body">
+                  <div className="notif-service">{n.service}</div>
+                  {n.recap?.length>0&&<div className="notif-detail">
+                    {n.recap.map((r,j)=>(
+                      <div className="notif-detail-row" key={j}>
+                        <span className="notif-detail-label">{r.l}</span>
+                        <span className="notif-detail-val">{r.v}</span>
+                      </div>
+                    ))}
+                  </div>}
+                  {n.status==="pending"&&<div className="notif-actions">
+                    <button className="notif-btn notif-accept" onClick={()=>confirmNotif(n.id)}>✓ Confirmer</button>
+                    <button className="notif-btn notif-decline" onClick={()=>declineNotif(n.id)}>Décliner</button>
+                  </div>}
+                  {n.status==="accepted"&&<div style={{marginTop:10,display:"flex",alignItems:"center",gap:6}}>
+                    <div style={{width:6,height:6,borderRadius:"50%",background:"#4CAF50"}}/>
+                    <span style={{fontSize:10,color:"#2E7D32",letterSpacing:".06em"}}>Confirmé · Visible par le client</span>
+                  </div>}
+                  {n.status==="declined"&&<div style={{marginTop:10,fontSize:10,color:"#9A8F7E",letterSpacing:".06em"}}>Demande déclinée</div>}
+                </div>
+              </>
+            )}
           </div>
         ))}
 
