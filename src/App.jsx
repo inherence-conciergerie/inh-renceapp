@@ -1767,7 +1767,7 @@ const VILLA_DATA = {
     sections: [
       {
         id: "confort",
-        icon: "💡",
+        icon: "\uD83D\uDCA1",
         title: "Votre confort & Astuces",
         items: [
           {
