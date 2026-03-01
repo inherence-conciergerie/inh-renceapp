@@ -1766,7 +1766,7 @@ function Questionnaire({onComplete, onClose}){
   </div>;
 }
 
-function ResidentApp({onNotif, bookings=[]}){
+function ResidentApp({onNotif, bookings=[]}{
   const [tab,setTab]=useState("home");
   const [chat,setChat]=useState(false);
   const [sheet,setSheet]=useState(null);
@@ -2094,13 +2094,15 @@ function Login({onLogin}){
 export default function App(){
   const [session,setSession]=useState(null);
   const [toast,setToast]=useState(null);
-  const [bookings,setBookings]=useState([{client:"Sophie M.",service:"Massages Signature",recap:[{l:"Technique",v:"Relaxant / Californien"},{l:"Soin 1h",v:"2 pers."},{l:"Date",v:"2025-03-15"}],time:"10:34",status:"pending"}]);
+  const [bookings,setBookings]=useState([{id:1,client:"Sophie M.",service:"Massages Signature",recap:[{l:"Technique",v:"Relaxant / Californien"},{l:"Soin 1h",v:"2 pers."},{l:"Date",v:"2025-03-15"}],time:"10:34",status:"pending"}]);
 
   const handleNotif=(name,recap)=>{
     setToast(name);
-    setBookings(b=>[...b,{client:"Sophie M.",service:name,recap,time:new Date().toLocaleTimeString("fr",{hour:"2-digit",minute:"2-digit"}),status:"pending"}]);
+    setBookings(b=>[...b,{id:Date.now(),client:"Anne-Claire",service:name,recap,time:new Date().toLocaleTimeString("fr",{hour:"2-digit",minute:"2-digit"}),status:"pending"}]);
     setTimeout(()=>setToast(null),4000);
   };
+  const handleConfirm=(id)=>setBookings(b=>b.map(x=>x.id===id?{...x,status:"accepted"}:x));
+  const handleDecline=(id)=>setBookings(b=>b.map(x=>x.id===id?{...x,status:"declined"}:x));
 
   return <>
     <style>{GS}</style>
