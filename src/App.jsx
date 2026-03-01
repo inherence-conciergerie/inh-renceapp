@@ -1763,28 +1763,32 @@ const VILLA_DATA = {
     redirect: null, // no specific data yet
   },
   "Caryota": {
-    nom: "Villa Caryota",
-    sections: [
-      {
-       id: "confort",
-        icon: "💡",
-        title: "Votre confort & Astuces",
-        items: [
-          {
-            title: "Le Secret de l'Eau Chaude",
-            content: "Une petite particularité de cette villa ! Dans la douche (RDC et piscine), le mitigeur fonctionne à l'inverse. Tournez le robinet à l'opposé de l'indication \"Chaud\". L'eau chaude arrivera en quelques secondes.",
-          },
-          {
-            title: "Climatisation",
-            content: "Pour votre confort et l'écologie, gardez les baies vitrées fermées. Pour activer la clim, insérez la clé située dans le boîtier près des toilettes et tournez-la.",
-          },
-          {
-            title: "Lumières",
-            content: "Les extérieurs sont automatisés (crépuscule / aube). Pour la véranda : activez d'abord l'interrupteur \"Cuisine\" (près de l'alarme), puis celui sous la boîte à clés.",
-          },
-        ],
-      },
-      {
+      nom: "Villa Caryota",
+      sections: [
+        {
+          id: "confort",
+          icon: "💡",
+          title: "Votre confort & Astuces",
+          items: [
+            {
+              title: "Le Secret de l'Eau Chaude",
+              content: "Une petite particularité de cette villa ! Dans la douche (RDC et piscine), le mitigeur fonctionne à l'inverse. Tournez le robinet à l'opposé de l'indication \"Chaud\". L'eau chaude arrivera en quelques secondes."
+            },
+            {
+              title: "Climatisation",
+              content: "Pour votre confort et l'écologie, gardez les baies vitrées fermées. Pour activer la clim, insérez la clé située dans le boîtier près des toilettes et tournez-la."
+            },
+            {
+              title: "Lumières",
+              content: "Les extérieurs sont automatisés (crépuscule / aube). Pour la véranda : activez d'abord l'interrupteur \"Cuisine\" (près de l'alarme), puis celui sous la boîte à clés."
+            }
+          ]
+        },
+        {
+           // Ajoute ta section suivante ici, ou supprime cette accolade si c'est la fin
+        }
+      ]
+    },
         id: "reglement",
         icon: "📜",
         title: "L'Art de Vivre",
