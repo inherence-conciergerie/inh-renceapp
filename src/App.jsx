@@ -1766,7 +1766,7 @@ const VILLA_DATA = {
       nom: "Villa Caryota",
       sections: [
         {
-          id: "confort",
+id: "confort",
           icon: "💡",
           title: "Votre confort & Astuces",
           items: [
