@@ -348,12 +348,16 @@ const MSGS=[
 ];
 
 const bc=s=>s==="ongoing"?"b-on":s==="planned"?"b-pl":"b-dn";
-const bl=s=>s==="ongoing"?"En cours":s==="planned"?"Planifié":"Terminé";
+const bl=s=>s==="ongoing"?tl("voy_encours","In progress"):s==="planned"?"Planifié":"Terminé";
 
 function SB(){return <div className="sb"><span>9:41</span><span style={{letterSpacing:2}}>● ● ●</span></div>;}
-function TB({onAv,initials}){
+function TB({onAv,initials,lang,setLang}){
   return <div className="topbar">
     <img src={ILN} className="logo-img" alt="Inhérence" style={{height:16,filter:"brightness(0) saturate(0) brightness(0.2)"}}/>
+    {setLang&&<div style={{display:"flex",gap:2,background:"rgba(46,60,77,0.06)",borderRadius:6,padding:2}}>
+      <div onClick={()=>setLang("fr")} style={{padding:"3px 8px",borderRadius:4,fontSize:9,fontWeight:lang==="fr"?500:300,color:lang==="fr"?"#2E3C4D":"#9A8F7E",background:lang==="fr"?"#fff":"transparent",cursor:"pointer",letterSpacing:".06em",transition:"all .15s"}}>FR</div>
+      <div onClick={()=>setLang("en")} style={{padding:"3px 8px",borderRadius:4,fontSize:9,fontWeight:lang==="en"?500:300,color:lang==="en"?"#2E3C4D":"#9A8F7E",background:lang==="en"?"#fff":"transparent",cursor:"pointer",letterSpacing:".06em",transition:"all .15s"}}>EN</div>
+    </div>}
     <div className="avatar-sm" onClick={onAv}>{initials}</div>
   </div>;
 }
@@ -645,7 +649,7 @@ function Chat({onBack}){
     <SB/>
     <div className="chat-hdr">
       <span className="back" onClick={onBack}>←</span>
-      <div className="msg-av" style={{width:34,height:34,fontSize:12}}>IN</div>
+      <div className="msg-av" style={{width:34,height:34,padding:4,background:"#2E3C4D",overflow:"hidden"}}><img src={ILI} style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div>
       <div><div className="chat-title">Concierge Inhérence</div><div className="chat-online">● disponible</div></div>
     </div>
     <div className="bubbles">
@@ -681,14 +685,14 @@ function ClientApp({onNotif}){
     <div className="scroll fade">
       {tab==="home"&&<>
         <div className="hero"><img src={IVO} className="hero-img" alt=""/><div className="hero-ring"/><div className="hero-ring2"/>
-          <div className="hero-tag">Bienvenue</div><div className="hero-name">Sophie</div>
+          <div className="hero-tag">{tl("bienvenue")}</div><div className="hero-name">Sophie</div>
           <div className="hero-badge"><div className="hero-dot"/><span>2 prestations actives</span></div>
         </div>
         <div className="stats"><div className="stat"><div className="stat-val">3</div><div className="stat-lbl">Prestations</div></div><div className="stat"><div className="stat-val">2</div><div className="stat-lbl">Documents</div></div></div>
         <div className="sec"><div className="sec-title">Prochaine prestation</div><div className="sec-line"><div className="ocre-bar"/></div></div>
         <div className="card"><div className="prest"><div className="prest-ico">🧹</div><div style={{flex:1}}><div className="prest-name">Ménage Villa Diamant</div><div className="prest-date">Aujourd'hui, 14h00</div></div><div className="badge b-on">En cours</div></div></div>
         <div className="ambient"><img src={IB} alt=""/><div className="ambient-ov"/><div className="ambient-text"><p>La Martinique, votre écrin</p><span>Inhérence · Conciergerie</span></div></div>
-        <div className="card" onClick={()=>setChat(true)}><div className="msg-item"><div className="msg-av">IN</div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Absolument. Plateau de bienvenue préparé...</div></div><div className="msg-dot">2</div></div></div>
+        <div className="card" onClick={()=>setChat(true)}><div className="msg-item"><div className="msg-av" style={{padding:4,background:"#2E3C4D",overflow:"hidden"}}><img src={ILI} style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Absolument. Plateau de bienvenue préparé...</div></div><div className="msg-dot">2</div></div></div>
         <div style={{height:16}}/>
       </>}
       {tab==="prestations"&&<>
@@ -730,7 +734,7 @@ function ClientApp({onNotif}){
       </>}
       {tab==="messages"&&<>
         <div className="sec" style={{marginTop:6}}><div className="sec-title">Messagerie</div><div className="sec-line"><div className="ocre-bar"/></div></div>
-        <div className="card" onClick={()=>setChat(true)}><div className="msg-item"><div className="msg-av">IN</div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Votre équipe disponible 7j/7</div></div></div></div>
+        <div className="card" onClick={()=>setChat(true)}><div className="msg-item"><div className="msg-av" style={{padding:4,background:"#2E3C4D",overflow:"hidden"}}><img src={ILI} style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Votre équipe disponible 7j/7</div></div></div></div>
         <div style={{height:12}}/>
       </>}
       {tab==="profile"&&<>
@@ -741,7 +745,7 @@ function ClientApp({onNotif}){
           <div className="pref-block"><div className="pref-title">⚠️ Contre-indications</div><div className="chips"><span className="chip chip-red">Huiles essentielles eucalyptus</span></div></div>
           <div className="pref-block" style={{marginBottom:0}}><div className="pref-title">✨ Indispensables</div><div className="chips"><span className="chip chip-ocre">Eau gazeuse Perrier</span><span className="chip chip-ocre">Oreillers fermes</span></div></div>
         </div>
-        <div className="logout"><span>↩</span> Se déconnecter</div>
+        <div className="logout" onClick={onLogout}><span>↩</span> Se déconnecter</div>
         <div style={{height:20}}/>
       </>}
     </div>
@@ -750,7 +754,411 @@ function ClientApp({onNotif}){
   </>;
 }
 
-function ConciergeApp({pendingBookings, onConfirm, onDecline}){
+
+// ─── CLIENTS TAB ─────────────────────────────────────────────────
+const VILLAS = ["Villa Bwa Kanpech","Villa Caryota","Aucune (Voyageur)"];
+
+function ClientsTab({sejours, setSejours, clientPrefs, clientFiche}){
+  const [view, setView] = useState("list"); // "list" | "add" | "detail"
+  const [selected, setSelected] = useState(null);
+  const [form, setForm] = useState({prenom:"",nom:"",email:"",tel:"",villa:"",checkIn:"",checkOut:"",type:"resident"});
+
+  const setF = (k,v) => setForm(f=>({...f,[k]:v}));
+
+  const getInitials = (prenom,nom) => {
+    return ((prenom[0]||"")+(nom[0]||"")).toUpperCase();
+  };
+
+  const getNights = (d1,d2) => {
+    if(!d1||!d2) return 0;
+    const diff = new Date(d2)-new Date(d1);
+    return Math.round(diff/(1000*60*60*24));
+  };
+
+  const getDaysLeft = (checkOut) => {
+    if(!checkOut) return null;
+    const diff = new Date(checkOut)-new Date();
+    return Math.max(0, Math.round(diff/(1000*60*60*24)));
+  };
+
+  const formatDate = (d) => {
+    if(!d) return "";
+    const date = new Date(d);
+    return date.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+  };
+
+  const canSave = form.prenom.trim() && form.nom.trim() && form.checkIn && form.checkOut;
+
+  const handleSave = () => {
+    const villaName = form.villa && form.villa!=="Aucune (Voyageur)" ? form.villa : null;
+    const newClient = {
+      id: Date.now(),
+      client: form.prenom.trim()+" "+form.nom.trim(),
+      initials: getInitials(form.prenom.trim(), form.nom.trim()),
+      email: form.email,
+      tel: form.tel,
+      villa: villaName,
+      checkIn: formatDate(form.checkIn),
+      checkOut: formatDate(form.checkOut),
+      checkInRaw: form.checkIn,
+      checkOutRaw: form.checkOut,
+      nights: getNights(form.checkIn, form.checkOut),
+      daysLeft: getDaysLeft(form.checkOut),
+      type: villaName ? "resident" : "voyageur",
+    };
+    setSejours(s=>[...s, newClient]);
+    setForm({prenom:"",nom:"",email:"",tel:"",villa:"",checkIn:"",checkOut:"",type:"resident"});
+    setView("list");
+  };
+
+  // ── Fiche client détail ───────────────────────────────────────
+  if(view==="detail" && selected){
+    const daysLeft = getDaysLeft(selected.checkOutRaw);
+    return <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+      <div style={{display:"flex",alignItems:"center",gap:12,padding:"14px 18px",borderBottom:"1px solid rgba(46,60,77,0.07)"}}>
+        <button onClick={()=>{setView("list");setSelected(null);}} style={{background:"none",border:"none",fontSize:20,color:"#2E3C4D",cursor:"pointer"}}>←</button>
+        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>Fiche client</div>
+      </div>
+      <div style={{flex:1,overflowY:"auto",scrollbarWidth:"none",padding:"0 0 20px"}}>
+        {/* Hero client */}
+        <div style={{background:"#2E3C4D",padding:"24px 22px 20px",display:"flex",alignItems:"center",gap:16}}>
+          <div style={{width:54,height:54,borderRadius:"50%",background:"#E3C191",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Cormorant Garamond',serif",fontSize:20,color:"#2E3C4D",fontWeight:300,flexShrink:0}}>{selected.initials}</div>
+          <div>
+            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:200,color:"#FAF8F3",fontStyle:"italic"}}>{selected.client}</div>
+            {selected.villa
+              ? <div style={{fontSize:10,color:"#E3C191",marginTop:4,letterSpacing:".1em",fontWeight:300}}>{selected.villa}</div>
+              : <div style={{fontSize:10,color:"rgba(250,248,243,0.4)",marginTop:4,letterSpacing:".1em",textTransform:"uppercase",fontWeight:300}}>Voyageur</div>
+            }
+          </div>
+        </div>
+
+        {/* Séjour */}
+        <div style={{margin:"16px 18px 0"}}>
+          <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>Séjour</div>
+          <div style={{background:"#fff",borderRadius:14,padding:"14px 16px"}}>
+            {[
+              ["🏡","Villa",selected.villa||"Voyageur (sans villa)"],
+              ["📅","Arrivée",selected.checkIn||"—"],
+              ["📅","Départ",selected.checkOut||"—"],
+              ["🌙","Durée",selected.nights+" nuits"],
+            ].map(([ico,lbl,val],i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"8px 0",borderBottom:i<3?"1px solid rgba(46,60,77,0.05)":"none"}}>
+                <span style={{fontSize:14,flexShrink:0}}>{ico}</span>
+                <span style={{fontSize:10,color:"#9A8F7E",minWidth:55,letterSpacing:".06em",fontWeight:300}}>{lbl}</span>
+                <span style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>{val}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Contact */}
+        {(selected.email||selected.tel)&&<div style={{margin:"14px 18px 0"}}>
+          <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>Contact</div>
+          <div style={{background:"#fff",borderRadius:14,padding:"14px 16px"}}>
+            {selected.email&&<div style={{display:"flex",alignItems:"center",gap:12,padding:"8px 0",borderBottom:selected.tel?"1px solid rgba(46,60,77,0.05)":"none"}}>
+              <span style={{fontSize:14}}>✉</span>
+              <span style={{fontSize:11,color:"#2E3C4D",fontWeight:300}}>{selected.email}</span>
+            </div>}
+            {selected.tel&&<div style={{display:"flex",alignItems:"center",gap:12,padding:"8px 0"}}>
+              <span style={{fontSize:14}}>📞</span>
+              <span style={{fontSize:11,color:"#2E3C4D",fontWeight:300}}>{selected.tel}</span>
+            </div>}
+          </div>
+        </div>}
+
+        {/* Statut séjour */}
+        <div style={{margin:"14px 18px 0"}}>
+          <div style={{padding:"12px 16px",borderRadius:12,background:daysLeft===0?"#FFEBEE":daysLeft!==null&&daysLeft<=2?"#FFF8E1":"#E8F5E9",display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:8,height:8,borderRadius:"50%",background:daysLeft===0?"#E57373":daysLeft!==null&&daysLeft<=2?"#E3C191":"#4CAF50",flexShrink:0}}/>
+            <span style={{fontSize:10,color:daysLeft===0?"#C62828":daysLeft!==null&&daysLeft<=2?"#C9A96E":"#2E7D32",letterSpacing:".08em",fontWeight:400}}>
+              {daysLeft===0?"Départ aujourd'hui":daysLeft!==null&&daysLeft<=2?"Départ dans "+daysLeft+" jour(s)":"Séjour en cours"}
+            </span>
+          </div>
+        </div>
+
+        {/* Préférences client */}
+        {/* Fiche questionnaire */}
+        {clientFiche&&selected?.client?.startsWith("Anne")&&<div style={{margin:"14px 18px 0"}}>
+          <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#1565C0",marginBottom:10,fontWeight:500}}>📋 Fiche pré-séjour</div>
+          <div style={{background:"#E3F2FD",borderRadius:14,padding:"14px 16px",border:"1px solid rgba(33,150,243,0.15)"}}>
+            {[
+              ["👥","Groupe",`${clientFiche.adults} adulte(s)${clientFiche.children>0?`, ${clientFiche.children} enfant(s)`:""}`],
+              clientFiche.noAllergie?["✅","Allergies","Aucune allergie"]:clientFiche.allergies?["🚫","Allergies",clientFiche.allergies]:null,
+              clientFiche.occasion&&clientFiche.occasion!=="undefined"?["🎉","Occasion",clientFiche.occasion]:null,
+              clientFiche.arrivalTime?["🕐","Heure d'arrivée",clientFiche.arrivalTime]:null,
+              ["👤","Accueil",`${clientFiche.remisePersonnes} pers. présente(s)`],
+              clientFiche.pasDeVol?["🚗","Transport","Pas d'avion"]:clientFiche.numVol?["✈️","Vol",clientFiche.numVol]:null,
+              clientFiche.transport==="local"?["🏝️","Transport","Résident Martinique"]:clientFiche.transport==="avion-voiture"?["🚗","Transport","Avion + véhicule propre"]:clientFiche.transport==="avion-sans-voiture"?["🚕","Transport","Avion sans véhicule"]:null,
+              clientFiche.arriveeService==="petitdej"?["🥐","Service arrivée","Petit-déjeuner signature"]:clientFiche.arriveeService==="courses"?["🛒","Service arrivée","Pré-stockage courses"]:null,
+            ].filter(Boolean).map(([ico,lbl,val],i,arr)=>(
+              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"7px 0",borderBottom:i<arr.length-1?"1px solid rgba(33,150,243,0.1)":"none"}}>
+                <span style={{fontSize:13,flexShrink:0,marginTop:1}}>{ico}</span>
+                <div>
+                  <div style={{fontSize:9,color:"#1565C0",letterSpacing:".12em",textTransform:"uppercase",marginBottom:1,fontWeight:300}}>{lbl}</div>
+                  <div style={{fontSize:11,color:"#2E3C4D",fontWeight:400}}>{val}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>}
+
+        {/* Fiche pré-séjour questionnaire */}
+        {clientFiche&&selected?.client?.startsWith("Anne")&&<div style={{margin:"14px 18px 0"}}>
+          <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#1565C0",marginBottom:10,fontWeight:500}}>📋 Fiche pré-séjour</div>
+          <div style={{background:"#E3F2FD",borderRadius:14,padding:"14px 16px",border:"1px solid rgba(33,150,243,0.15)"}}>
+            {[
+              ["👥","Groupe",clientFiche.adults+" adulte(s)"+(clientFiche.children>0?", "+clientFiche.children+" enfant(s)":"")],
+              clientFiche.noAllergie?["✅","Allergies","Aucune allergie"]:clientFiche.allergies?["🚫","Allergies",clientFiche.allergies]:null,
+              clientFiche.occasion?["🎉","Occasion",clientFiche.occasion]:null,
+              clientFiche.arrivalTime?["🕐","Heure d'arrivée",clientFiche.arrivalTime]:null,
+              ["👤","Accueil",clientFiche.remisePersonnes+" pers. présente(s)"],
+              clientFiche.pasDeVol?["🚗","Voyage","Pas d'avion"]:clientFiche.numVol?["✈️","Vol",clientFiche.numVol]:null,
+              clientFiche.transport==="local"?["🏝","Transport","Résident Martinique"]:clientFiche.transport==="avion-voiture"?["🚗","Transport","Avion + véhicule propre"]:clientFiche.transport==="avion-sans-voiture"?["🚕","Transport","Avion sans véhicule"]:null,
+              clientFiche.arriveeService==="petitdej"?["🥐","Arrivée","Petit-déj. signature"]:clientFiche.arriveeService==="courses"?["🛒","Arrivée","Pré-stockage courses"]:null,
+            ].filter(Boolean).map(([ico,lbl,val],i,arr)=>(
+              <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"7px 0",borderBottom:i<arr.length-1?"1px solid rgba(33,150,243,0.1)":"none"}}>
+                <span style={{fontSize:13,flexShrink:0,marginTop:1}}>{ico}</span>
+                <div>
+                  <div style={{fontSize:9,color:"#1565C0",letterSpacing:".12em",textTransform:"uppercase",marginBottom:1,fontWeight:300}}>{lbl}</div>
+                  <div style={{fontSize:11,color:"#2E3C4D",fontWeight:400}}>{val}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>}
+
+                {clientPrefs&&<div style={{margin:"14px 18px 0"}}>
+          <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>✦ Préférences renseignées</div>
+          <div style={{background:"#fff",borderRadius:14,padding:"14px 16px",border:"1px solid rgba(46,60,77,0.06)"}}>
+            {clientPrefs.allergies?.length>0&&<div style={{marginBottom:10}}>
+              <div style={{fontSize:9,color:"#9A8F7E",letterSpacing:".14em",textTransform:"uppercase",marginBottom:6,fontWeight:300}}>🚫 Allergies</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                {clientPrefs.allergies.map((a,i)=><span key={i} style={{padding:"4px 10px",borderRadius:2,background:"#FFEBEE",border:"1px solid rgba(229,115,115,0.2)",fontSize:10,color:"#C62828",fontWeight:300}}>{a}</span>)}
+              </div>
+            </div>}
+            {clientPrefs.indispensables?.length>0&&<div style={{marginBottom:10}}>
+              <div style={{fontSize:9,color:"#9A8F7E",letterSpacing:".14em",textTransform:"uppercase",marginBottom:6,fontWeight:300}}>✨ Indispensables</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                {clientPrefs.indispensables.map((a,i)=><span key={i} style={{padding:"4px 10px",borderRadius:2,background:"#F5ECD8",border:"1px solid rgba(227,193,145,0.2)",fontSize:10,color:"#C9A96E",fontWeight:300}}>{a}</span>)}
+              </div>
+            </div>}
+            {clientPrefs.musique?.length>0&&<div>
+              <div style={{fontSize:9,color:"#9A8F7E",letterSpacing:".14em",textTransform:"uppercase",marginBottom:6,fontWeight:300}}>🎵 Musique</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+                {clientPrefs.musique.map((a,i)=><span key={i} style={{padding:"4px 10px",borderRadius:2,background:"#2E3C4D",fontSize:10,color:"#E3C191",fontWeight:300}}>{a}</span>)}
+              </div>
+            </div>}
+          </div>
+        </div>}
+
+        {/* Accès villa */}
+        {selected.villa&&<div style={{margin:"14px 18px 0",padding:"14px 16px",borderRadius:12,background:"#F5ECD8",border:"1px solid rgba(227,193,145,0.3)"}}>
+          <div style={{fontSize:10,color:"#C9A96E",fontWeight:400,letterSpacing:".08em",marginBottom:4}}>✦ Page villa associée</div>
+          <div style={{fontSize:12,color:"#2E3C4D",fontWeight:300}}>Ce client verra automatiquement la page {selected.villa} dans son interface.</div>
+        </div>}
+
+
+      </div>
+    </div>;
+  }
+
+  // ── Formulaire ajout client ───────────────────────────────────
+  if(view==="add") return <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+    <div style={{display:"flex",alignItems:"center",gap:12,padding:"14px 18px",borderBottom:"1px solid rgba(46,60,77,0.07)",flexShrink:0}}>
+      <button onClick={()=>setView("list")} style={{background:"none",border:"none",fontSize:20,color:"#2E3C4D",cursor:"pointer"}}>←</button>
+      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>Nouveau client</div>
+    </div>
+
+    <div style={{flex:1,overflowY:"auto",scrollbarWidth:"none",padding:"20px 18px"}}>
+
+      {/* Identité */}
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>Identité</div>
+      <div style={{display:"flex",gap:10,marginBottom:12}}>
+        <div style={{flex:1}}>
+          <div style={{fontSize:9,letterSpacing:".14em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:5,fontWeight:300}}>Prénom <span style={{color:"#E57373"}}>*</span></div>
+          <input style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",fontWeight:300}} placeholder="Marie" value={form.prenom} onChange={e=>setF("prenom",e.target.value)}/>
+        </div>
+        <div style={{flex:1}}>
+          <div style={{fontSize:9,letterSpacing:".14em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:5,fontWeight:300}}>Nom <span style={{color:"#E57373"}}>*</span></div>
+          <input style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",fontWeight:300}} placeholder="Dupont" value={form.nom} onChange={e=>setF("nom",e.target.value)}/>
+        </div>
+      </div>
+
+      {/* Contact */}
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,marginTop:4,fontWeight:400}}>Contact</div>
+      {[["Email","email","marie@email.com","email"],["Téléphone","tel","+596 696 00 00 00","tel"]].map(([lbl,key,ph,type])=>(
+        <div key={key} style={{marginBottom:12}}>
+          <div style={{fontSize:9,letterSpacing:".14em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:5,fontWeight:300}}>{lbl}</div>
+          <input type={type} style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",fontWeight:300}} placeholder={ph} value={form[key]} onChange={e=>setF(key,e.target.value)}/>
+        </div>
+      ))}
+
+      {/* Villa */}
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,marginTop:4,fontWeight:400}}>Villa de résidence</div>
+      <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+        {VILLAS.map((v,i)=>(
+          <div key={i} onClick={()=>setF("villa",v)} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",borderRadius:10,border:"1px solid "+(form.villa===v?"#E3C191":"rgba(46,60,77,0.1)"),background:form.villa===v?"#F5ECD8":"#fff",cursor:"pointer",transition:"all .15s"}}>
+            <div style={{width:16,height:16,borderRadius:"50%",border:"2px solid "+(form.villa===v?"#E3C191":"rgba(46,60,77,0.2)"),display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              {form.villa===v&&<div style={{width:7,height:7,borderRadius:"50%",background:"#E3C191"}}/>}
+            </div>
+            <span style={{fontSize:12,color:form.villa===v?"#C9A96E":"#2E3C4D",fontWeight:300}}>{v}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Dates */}
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>Dates du séjour</div>
+      <div style={{display:"flex",gap:10,marginBottom:8}}>
+        <div style={{flex:1}}>
+          <div style={{fontSize:9,letterSpacing:".14em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:5,fontWeight:300}}>Arrivée <span style={{color:"#E57373"}}>*</span></div>
+          <input type="date" style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:11,color:"#2E3C4D",outline:"none",fontWeight:300}} value={form.checkIn} onChange={e=>setF("checkIn",e.target.value)}/>
+        </div>
+        <div style={{flex:1}}>
+          <div style={{fontSize:9,letterSpacing:".14em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:5,fontWeight:300}}>Départ <span style={{color:"#E57373"}}>*</span></div>
+          <input type="date" style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:11,color:"#2E3C4D",outline:"none",fontWeight:300}} value={form.checkOut} onChange={e=>setF("checkOut",e.target.value)}/>
+        </div>
+      </div>
+      {form.checkIn&&form.checkOut&&getNights(form.checkIn,form.checkOut)>0&&(
+        <div style={{fontSize:10,color:"#9A8F7E",fontStyle:"italic",fontWeight:300,marginBottom:16,textAlign:"center"}}>
+          {getNights(form.checkIn,form.checkOut)} nuit(s) · {formatDate(form.checkIn)} → {formatDate(form.checkOut)}
+        </div>
+      )}
+
+      <div style={{height:8}}/>
+    </div>
+
+    <div style={{padding:"12px 18px 28px",borderTop:"1px solid rgba(46,60,77,0.06)",background:"#FAF8F3",flexShrink:0}}>
+      <button onClick={canSave?handleSave:undefined} style={{width:"100%",padding:"14px",borderRadius:12,border:"none",background:canSave?"#2E3C4D":"rgba(46,60,77,0.15)",color:canSave?"#FAF8F3":"#9A8F7E",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",cursor:canSave?"pointer":"not-allowed",transition:"all .2s"}}>
+        ✦ Créer le client
+      </button>
+      {!canSave&&<div style={{textAlign:"center",fontSize:9,color:"#9A8F7E",marginTop:8,letterSpacing:".1em"}}>Prénom, nom et dates sont obligatoires</div>}
+    </div>
+  </div>;
+
+  // ── Liste clients ─────────────────────────────────────────────
+  return <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 18px 10px",flexShrink:0}}>
+      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:20,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>Mes clients</div>
+      <button onClick={()=>setView("add")} style={{display:"flex",alignItems:"center",gap:7,padding:"9px 14px",borderRadius:20,border:"none",background:"#2E3C4D",color:"#E3C191",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:400,letterSpacing:".12em",cursor:"pointer"}}>
+        <span style={{fontSize:14}}>+</span> Nouveau client
+      </button>
+    </div>
+    <div style={{flex:1,overflowY:"auto",scrollbarWidth:"none",padding:"0 18px 16px"}}>
+      {sejours.length===0&&<div style={{textAlign:"center",padding:"40px 20px",color:"#9A8F7E",fontSize:12,fontStyle:"italic",fontWeight:300}}>Aucun client pour le moment</div>}
+      {sejours.map((s,i)=>(
+        <div key={s.id||i} onClick={()=>{setSelected(s);setView("detail");}} style={{background:"#fff",borderRadius:14,padding:"14px 16px",marginBottom:8,border:"1px solid rgba(46,60,77,0.06)",cursor:"pointer",display:"flex",alignItems:"center",gap:12}}>
+          <div style={{width:42,height:42,borderRadius:"50%",background:"#2E3C4D",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Cormorant Garamond',serif",fontSize:15,color:"#E3C191",flexShrink:0}}>{s.initials}</div>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:13,color:"#2E3C4D",fontWeight:400}}>{s.client}</div>
+            {s.villa
+              ? <div style={{fontSize:10,color:"#E3C191",marginTop:2,fontWeight:400,letterSpacing:".06em"}}>{s.villa}</div>
+              : <div style={{fontSize:9,color:"#9A8F7E",marginTop:2,letterSpacing:".1em",textTransform:"uppercase",fontWeight:300}}>Voyageur</div>
+            }
+            <div style={{fontSize:10,color:"#9A8F7E",marginTop:3,fontWeight:300}}>{s.checkIn} → {s.checkOut}{s.nights?" · "+s.nights+" nuits":""}</div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:6,flexShrink:0}}>
+            <div style={{fontSize:9,padding:"3px 8px",borderRadius:6,background:s.daysLeft===0?"#FFEBEE":s.daysLeft!=null&&s.daysLeft<=2?"#FFF8E1":"rgba(76,175,80,0.08)",color:s.daysLeft===0?"#C62828":s.daysLeft!=null&&s.daysLeft<=2?"#C9A96E":"#2E7D32",fontWeight:400}}>
+              {s.daysLeft===0?"Départ auj.":s.daysLeft!=null&&s.daysLeft<=2?"J-"+s.daysLeft:"En séjour"}
+            </div>
+            <span style={{color:"#9A8F7E",fontSize:16}}>›</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>;
+}
+
+
+// ─── CONCIERGE PROFILE COMPONENT ─────────────────────────────────
+const NOTIF_ITEMS = [
+  {key:"checkin", label:"Check-in", sub:"À l'arrivée d'un client"},
+  {key:"checkout", label:"Check-out", sub:"Au départ d'un client"},
+  {key:"prestation", label:"Demande de prestation", sub:"Nouvelle réservation reçue"},
+  {key:"message", label:"Message client", sub:"Nouveau message dans la messagerie"},
+  {key:"questionnaire", label:"Questionnaire non complété", sub:"Rappel J-7 avant arrivée"},
+];
+
+function ConciergeProfile({onLogout}){
+  const [section,setSection] = useState(null);
+  const [notifs,setNotifs] = useState({checkin:true,checkout:true,prestation:true,message:true,questionnaire:true});
+
+  const toggleNotif = (key) => setNotifs(n=>({...n,[key]:!n[key]}));
+
+  if(section==="notifications") return <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+    <div style={{display:"flex",alignItems:"center",gap:12,padding:"14px 18px",borderBottom:"1px solid rgba(46,60,77,0.07)",flexShrink:0}}>
+      <button onClick={()=>setSection(null)} style={{background:"none",border:"none",fontSize:20,color:"#2E3C4D",cursor:"pointer"}}>←</button>
+      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>Notifications</div>
+    </div>
+    <div style={{flex:1,overflowY:"auto",scrollbarWidth:"none",padding:"16px 18px"}}>
+      <div style={{fontSize:10,color:"#9A8F7E",fontWeight:300,lineHeight:1.7,marginBottom:16}}>
+        Activez les alertes qui apparaîtront sur votre téléphone. Une fois Firebase connecté, ces notifications seront envoyées en temps réel.
+      </div>
+      {NOTIF_ITEMS.map((item,i)=>(
+        <div key={item.key} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 0",borderBottom:i<NOTIF_ITEMS.length-1?"1px solid rgba(46,60,77,0.06)":"none"}}>
+          <div style={{flex:1}}>
+            <div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>{item.label}</div>
+            <div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>{item.sub}</div>
+          </div>
+          <div onClick={()=>toggleNotif(item.key)} style={{width:46,height:26,borderRadius:13,background:notifs[item.key]?"#2E3C4D":"rgba(46,60,77,0.12)",cursor:"pointer",position:"relative",transition:"background .25s",flexShrink:0}}>
+            <div style={{position:"absolute",top:3,left:notifs[item.key]?22:3,width:20,height:20,borderRadius:"50%",background:notifs[item.key]?"#E3C191":"#fff",transition:"left .25s",boxShadow:"0 1px 4px rgba(0,0,0,0.15)"}}/>
+          </div>
+        </div>
+      ))}
+      <div style={{marginTop:16,padding:"12px 14px",borderRadius:12,background:"#F5ECD8",border:"1px solid rgba(227,193,145,0.2)"}}>
+        <div style={{fontSize:10,color:"#C9A96E",lineHeight:1.7,fontWeight:300}}>✦ Les notifications push sur téléphone seront activées lors de la connexion à Firebase. En attendant, les alertes sont visibles dans l'espace Accueil.</div>
+      </div>
+      <div style={{height:16}}/>
+    </div>
+  </div>;
+
+  if(section==="villas") return <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
+    <div style={{display:"flex",alignItems:"center",gap:12,padding:"14px 18px",borderBottom:"1px solid rgba(46,60,77,0.07)",flexShrink:0}}>
+      <button onClick={()=>setSection(null)} style={{background:"none",border:"none",fontSize:20,color:"#2E3C4D",cursor:"pointer"}}>←</button>
+      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>Mes villas</div>
+    </div>
+    <div style={{flex:1,padding:"16px 18px",overflowY:"auto",scrollbarWidth:"none"}}>
+      {["Villa Bwa Kanpech","Villa Caryota"].map((v,i)=>(
+        <div key={i} style={{background:"#fff",borderRadius:14,padding:"16px",marginBottom:10,border:"1px solid rgba(46,60,77,0.07)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:12}}>
+            <div style={{width:40,height:40,borderRadius:12,background:"#F5ECD8",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>🏡</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:13,color:"#2E3C4D",fontWeight:400}}>{v}</div>
+              <div style={{fontSize:10,color:"#4CAF50",marginTop:2,fontWeight:300,letterSpacing:".06em"}}>● Active</div>
+            </div>
+          </div>
+        </div>
+      ))}
+      <div style={{height:12}}/>
+    </div>
+  </div>;
+
+  return <div style={{overflowY:"auto",scrollbarWidth:"none"}}>
+    <div className="profile-hero">
+      <img src={IB} className="ph-img" alt=""/>
+      <div className="prof-av">EM</div>
+      <div className="prof-name">Emelyne</div>
+      <div className="prof-plan">Concierge · Inhérence</div>
+    </div>
+    {[
+      {ico:"🏡",lbl:"Mes villas",sub:"Bwa Kanpech · Caryota",action:()=>setSection("villas")},
+      {ico:"🔔",lbl:"Notifications",sub:Object.values(notifs).filter(Boolean).length+" alertes actives",action:()=>setSection("notifications")},
+      {ico:"📊",lbl:"Statistiques",sub:"Taux d'occupation · Notes",action:null},
+      {ico:"🔒",lbl:"Sécurité",sub:"Mot de passe",action:null},
+    ].map((r,i)=>(
+      <div key={i} className="pr-row" onClick={r.action||undefined} style={{opacity:r.action?1:0.5}}>
+        <div className="pr-lbl">
+          <div style={{width:36,height:36,borderRadius:10,background:r.lbl==="Notifications"&&Object.values(notifs).some(Boolean)?"#2E3C4D":"#F5ECD8",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15}}>{r.ico}</div>
+          <div><div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>{r.lbl}</div><div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>{r.sub}</div></div>
+        </div>
+        <span style={{color:r.action?"#9A8F7E":"rgba(46,60,77,0.2)",fontSize:18}}>›</span>
+      </div>
+    ))}
+    <div className="logout" onClick={onLogout}><span>↩</span> Se déconnecter</div>
+    <div style={{height:20}}/>
+  </div>;
+}
+
+function ConciergeApp({pendingBookings, onConfirm, onDecline, onLogout, clientPrefs, clientFiche}){
   const [tab,setTab]=useState("home");
   const [notifs,setNotifs]=useState(pendingBookings||[]);
   const [checkoutRequests,setCheckoutRequests]=useState([
@@ -856,6 +1264,16 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline}){
         }
         {notifs.map((n,i)=>(
           <div className="notif-card" key={i}>
+            {n.isFiche?(
+              <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px 8px"}}>
+                <span style={{fontSize:16}}>📋</span>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>Questionnaire reçu — {n.client}</div>
+                  <div style={{fontSize:10,color:"#1565C0",marginTop:2,fontWeight:300}}>Fiche pré-séjour complétée · Visible dans Clients</div>
+                </div>
+                <div style={{fontSize:9,color:"rgba(227,193,145,0.6)"}}>{n.time}</div>
+              </div>
+            ):
             <div className="notif-hdr">
               <span style={{fontSize:14}}>🔔</span>
               <div className="notif-hdr-title">{n.client}</div>
@@ -880,36 +1298,36 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline}){
                 <span style={{fontSize:10,color:"#2E7D32",letterSpacing:".06em"}}>Confirmé · Visible par le client</span>
               </div>}
               {n.status==="declined"&&<div style={{marginTop:10,fontSize:10,color:"#9A8F7E",letterSpacing:".06em"}}>Demande déclinée</div>}
-            </div>
+            </div>}
           </div>
         ))}
 
+        {clientFiche&&<div style={{margin:"0 18px 8px",background:"#E3F2FD",borderRadius:14,padding:"14px 16px",border:"1px solid rgba(33,150,243,0.2)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:34,height:34,borderRadius:10,background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>📋</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>Questionnaire pré-séjour reçu</div>
+              <div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>Anne-Claire a complété sa fiche · Voir dans Clients</div>
+            </div>
+            <div onClick={()=>setTab("clients")} style={{background:"#2E3C4D",borderRadius:8,padding:"6px 12px",cursor:"pointer"}}>
+              <span style={{fontSize:9,color:"#E3C191",letterSpacing:".1em",textTransform:"uppercase"}}>Voir</span>
+            </div>
+          </div>
+        </div>}
+        {clientPrefs&&<div style={{margin:"0 18px 8px",background:"#E8F5E9",borderRadius:14,padding:"14px 16px",border:"1px solid rgba(76,175,80,0.2)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:34,height:34,borderRadius:10,background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>⭐</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>Préférences complétées</div>
+              <div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>Anne-Claire a renseigné ses allergies, indispensables et goûts musicaux</div>
+            </div>
+          </div>
+        </div>}
         <div style={{height:16}}/>
       </>}
 
       {/* ── CLIENTS ───────────────────────────────── */}
-      {tab==="clients"&&<>
-        <div className="sec" style={{marginTop:6}}><div className="sec-title">Mes clients</div><div className="sec-line"><div className="ocre-bar"/></div></div>
-        {sejours.map((s,i)=>(
-          <div className="card" key={i}>
-            <div style={{display:"flex",alignItems:"center",gap:12}}>
-              <div style={{width:42,height:42,borderRadius:"50%",background:"#2E3C4D",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Cormorant Garamond',serif",fontSize:14,color:"#E3C191",flexShrink:0}}>{s.initials}</div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:13,color:"#2E3C4D",fontWeight:400}}>{s.client}</div>
-                {s.villa&&<div style={{fontSize:10,color:"#E3C191",marginTop:2,fontWeight:400,letterSpacing:".06em"}}>{s.villa}</div>}
-                {!s.villa&&<div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300,letterSpacing:".06em",textTransform:"uppercase"}}>Voyageur</div>}
-                <div style={{fontSize:10,color:"#9A8F7E",marginTop:3,fontWeight:300}}>{s.checkIn} → {s.checkOut} · {s.nights} nuits</div>
-              </div>
-              <div style={{textAlign:"right",flexShrink:0}}>
-                <div style={{fontSize:10,padding:"4px 8px",borderRadius:6,background:s.daysLeft===0?"#FFEBEE":s.daysLeft<=2?"#FFF8E1":"rgba(76,175,80,0.08)",color:s.daysLeft===0?"#C62828":s.daysLeft<=2?"#C9A96E":"#2E7D32",fontWeight:400,letterSpacing:".06em"}}>
-                  {s.daysLeft===0?"Départ auj.":s.daysLeft<=2?"J-"+s.daysLeft:"En séjour"}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-        <div style={{height:12}}/>
-      </>}
+      {tab==="clients"&&<ClientsTab sejours={sejours} setSejours={setSejours} clientPrefs={clientPrefs} clientFiche={clientFiche}/>}
 
       {/* ── DÉPARTS ───────────────────────────────── */}
       {tab==="checkout"&&<>
@@ -975,20 +1393,7 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline}){
       </>}
 
       {/* ── PROFIL ────────────────────────────────── */}
-      {tab==="profile"&&<>
-        <div className="profile-hero"><img src={IB} className="ph-img" alt=""/><div className="prof-av">EM</div><div className="prof-name">Em</div><div className="prof-plan">Concierge · Inhérence</div></div>
-        {[["🏡","Mes villas","Bwa Kanpech · Les Alizés"],["📊","Statistiques","Taux d'occupation · Notes"],["🔔","Notifications","Alertes & rappels"],["🔒","Sécurité","Mot de passe"]].map(([ico,lbl,sub],i)=>(
-          <div className="pr-row" key={i}>
-            <div className="pr-lbl">
-              <div style={{width:36,height:36,borderRadius:10,background:"#F5ECD8",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15}}>{ico}</div>
-              <div><div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>{lbl}</div><div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>{sub}</div></div>
-            </div>
-            <span style={{color:"#9A8F7E",fontSize:18}}>›</span>
-          </div>
-        ))}
-        <div className="logout"><span>↩</span> Se déconnecter</div>
-        <div style={{height:20}}/>
-      </>}
+      {tab==="profile"&&<ConciergeProfile onLogout={onLogout}/>}
     </div>
     <BN tabs={tabs} active={tab} set={setTab}/>
   </>;
@@ -998,20 +1403,27 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline}){
 
 
 // ─── CATÉGORIES D'ACTIVITÉS ───────────────────────────────────────
-const ACT_CATS = [
+const ACT_CATS_FR = [
   { id:"mer", icon:"🌊", label:"Mer & Nautisme", desc:"Voile, catamaran, plongée, jet-ski, pêche en haute mer..." },
   { id:"nature", icon:"🌿", label:"Nature & Aventure", desc:"Randonnées, canyoning, escalade, observation de la faune..." },
   { id:"culture", icon:"🎭", label:"Culture & Découverte", desc:"Rhum, artisanat local, visites guidées, marchés créoles..." },
 ];
+const ACT_CATS_EN = [
+  { id:"mer", icon:"🌊", label:"Sea & Watersports", desc:"Sailing, catamaran, diving, jet-ski, deep-sea fishing..." },
+  { id:"nature", icon:"🌿", label:"Nature & Adventure", desc:"Hiking, canyoning, climbing, wildlife watching..." },
+  { id:"culture", icon:"🎭", label:"Culture & Discovery", desc:"Rum distilleries, local crafts, guided tours, Creole markets..." },
+];
 
 const BUDGETS = ["90 – 150 € / pers.","150 – 250 € / pers.","250 – 400 € / pers.","400 € et plus / pers.","Pas de limite définie"];
 
-function ActivitesPage({onNotif}){
+function ActivitesPage({onNotif, lang="fr"}){
+  const tl = useT(lang);
   const [step,setStep]=useState(0); // 0=catalogue, 1=form, 2=sent
   const [selectedCat,setSelectedCat]=useState(null);
   const [form,setForm]=useState({personnes:2,budget:"",date:"",heure:"",ambiance:""});
   const setF=(k,v)=>setForm(f=>({...f,[k]:v}));
 
+  const ACT_CATS = lang==="en" ? ACT_CATS_EN : ACT_CATS_FR;
   const tomorrow=()=>{const d=new Date();d.setDate(d.getDate()+1);return d.toISOString().split('T')[0];};
 
   const canSubmit = selectedCat && form.budget && form.date && form.personnes>=1 && !!form.activiteLibre?.trim();
@@ -1023,10 +1435,10 @@ function ActivitesPage({onNotif}){
 
   if(step===2) return <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:"100%",padding:32,textAlign:"center"}}>
     <div style={{width:64,height:64,borderRadius:"50%",background:"#E8F5E9",display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,marginBottom:20}}>✦</div>
-    <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:26,fontWeight:200,color:"#2E3C4D",fontStyle:"italic",marginBottom:10,letterSpacing:".04em"}}>Demande envoyée</div>
-    <div style={{fontSize:11,color:"#9A8F7E",lineHeight:1.8,fontWeight:300,marginBottom:28}}>Votre concierge compose une expérience sur-mesure et vous revient sous 24h avec une proposition personnalisée.</div>
+    <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:26,fontWeight:200,color:"#2E3C4D",fontStyle:"italic",marginBottom:10,letterSpacing:".04em"}}>{tl("act_sent")}</div>
+    <div style={{fontSize:11,color:"#9A8F7E",lineHeight:1.8,fontWeight:300,marginBottom:28}}>{tl("act_sent_sub")}</div>
     <div style={{background:"#2E3C4D",borderRadius:14,padding:"14px 20px",marginBottom:12,width:"100%"}}>
-      <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#E3C191",marginBottom:8,fontWeight:300}}>Votre demande</div>
+      <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#E3C191",marginBottom:8,fontWeight:300}}>{tl("act_votre_demande")}</div>
       {[{l:"Catégorie",v:selectedCat?.label},{l:"Activité(s)",v:form.activiteLibre},{l:"Personnes",v:`${form.personnes}`},{l:"Budget",v:form.budget},{l:"Date",v:form.date},{l:"Ambiance",v:form.ambiance||"Non précisée"}].map((r,i)=>(
         <div key={i} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:i<4?"1px solid rgba(250,248,243,0.06)":"none"}}>
           <span style={{fontSize:9,color:"rgba(250,248,243,0.45)",textTransform:"uppercase",letterSpacing:".08em"}}>{r.l}</span>
@@ -1034,7 +1446,7 @@ function ActivitesPage({onNotif}){
         </div>
       ))}
     </div>
-    <button onClick={()=>{setStep(0);setSelectedCat(null);setForm({personnes:2,budget:"",date:"",heure:"",ambiance:""}); }} style={{padding:"12px 24px",borderRadius:12,border:"1px solid rgba(46,60,77,0.12)",background:"transparent",fontFamily:"'Montserrat',sans-serif",fontSize:10,color:"#2E3C4D",cursor:"pointer",letterSpacing:".14em",textTransform:"uppercase",fontWeight:300}}>Nouvelle demande</button>
+    <button onClick={()=>{setStep(0);setSelectedCat(null);setForm({personnes:2,budget:"",date:"",heure:"",ambiance:""}); }} style={{padding:"12px 24px",borderRadius:12,border:"1px solid rgba(46,60,77,0.12)",background:"transparent",fontFamily:"'Montserrat',sans-serif",fontSize:10,color:"#2E3C4D",cursor:"pointer",letterSpacing:".14em",textTransform:"uppercase",fontWeight:300}}>{tl("act_nouvelle")}</button>
   </div>;
 
   if(step===1) return <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
@@ -1046,7 +1458,7 @@ function ActivitesPage({onNotif}){
         <button onClick={()=>setStep(0)} style={{background:"rgba(250,248,243,0.1)",border:"1px solid rgba(250,248,243,0.2)",borderRadius:"50%",width:30,height:30,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:"#FAF8F3",fontSize:14,flexShrink:0}}>←</button>
         <div>
           <div style={{fontSize:9,letterSpacing:".22em",textTransform:"uppercase",color:"#E3C191",fontWeight:300}}>{selectedCat?.icon} {selectedCat?.label}</div>
-          <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:200,color:"#FAF8F3",fontStyle:"italic",lineHeight:1.1,marginTop:2}}>Composons votre expérience</div>
+          <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:200,color:"#FAF8F3",fontStyle:"italic",lineHeight:1.1,marginTop:2}}>{tl("act_composons")}</div>
         </div>
       </div>
     </div>
@@ -1054,12 +1466,12 @@ function ActivitesPage({onNotif}){
     <div style={{flex:1,overflowY:"auto",padding:"18px 22px",scrollbarWidth:"none"}}>
 
       {/* Activité souhaitée */}
-      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>Activité(s) souhaitée(s) <span style={{color:"#E57373"}}>*</span></div>
-      <textarea style={{width:"100%",padding:"11px 14px",borderRadius:10,border:`1px solid ${form.activiteLibre?"rgba(46,60,77,0.1)":"rgba(229,115,115,0.4)"}`,background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",resize:"none",fontWeight:300,lineHeight:1.6,marginBottom:form.activiteLibre?14:4}} rows={3} placeholder="Décrivez l'activité ou les activités que vous souhaitez réaliser..." value={form.activiteLibre||""} onChange={e=>setF("activiteLibre",e.target.value)}/>
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>{tl("act_activite_label")} <span style={{color:"#E57373"}}>*</span></div>
+      <textarea style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid "+(form.activiteLibre?"rgba(46,60,77,0.1)":"rgba(229,115,115,0.4)"),background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",resize:"none",fontWeight:300,lineHeight:1.6,marginBottom:form.activiteLibre?14:4}} rows={3} placeholder={tl("act_activite_ph")} value={form.activiteLibre||""} onChange={e=>setF("activiteLibre",e.target.value)}/>
       {!form.activiteLibre&&<div style={{fontSize:9,color:"#E57373",letterSpacing:".08em",marginBottom:14,fontWeight:400}}>Ce champ est obligatoire</div>}
 
       {/* Personnes */}
-      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>Nombre de participants</div>
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>{tl("act_participants")}</div>
       <div style={{display:"flex",alignItems:"center",padding:"10px 0",marginBottom:14,borderBottom:"1px solid rgba(46,60,77,0.05)"}}>
         <div style={{flex:1,fontSize:12,color:"#2E3C4D",fontWeight:300}}>Participants</div>
         <div style={{display:"flex",alignItems:"center",gap:14}}>
@@ -1070,7 +1482,7 @@ function ActivitesPage({onNotif}){
       </div>
 
       {/* Budget */}
-      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>Budget par personne <span style={{color:"#E57373"}}>*</span></div>
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>{tl("act_budget")} <span style={{color:"#E57373"}}>*</span></div>
       <div style={{display:"flex",flexWrap:"wrap",gap:7,marginBottom:18}}>
         {BUDGETS.map((b,i)=>(
           <div key={i} onClick={()=>setF("budget",b)} style={{padding:"8px 12px",borderRadius:2,border:`1px solid ${form.budget===b?"#E3C191":"rgba(46,60,77,0.12)"}`,background:form.budget===b?"#F5ECD8":"#fff",cursor:"pointer",fontSize:10,color:form.budget===b?"#C9A96E":"#2E3C4D",fontWeight:300,letterSpacing:".04em",transition:"all .15s"}}>{b}</div>
@@ -1078,25 +1490,25 @@ function ActivitesPage({onNotif}){
       </div>
 
       {/* Date */}
-      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>Date souhaitée <span style={{color:"#E57373"}}>*</span></div>
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>{tl("act_date")} <span style={{color:"#E57373"}}>*</span></div>
       <input type="date" min={tomorrow()} style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",fontWeight:300,marginBottom:14}} value={form.date} onChange={e=>setF("date",e.target.value)}/>
 
       {/* Heure */}
-      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>Heure de départ <span style={{fontSize:9,color:"#9A8F7E",textTransform:"none",letterSpacing:0}}>(optionnel)</span></div>
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>{tl("act_heure")} <span style={{fontSize:9,color:"#9A8F7E",textTransform:"none",letterSpacing:0}}>{tl("act_heure_opt")}</span></div>
       <input type="time" style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",fontWeight:300,marginBottom:14}} value={form.heure} onChange={e=>setF("heure",e.target.value)}/>
 
       {/* Ambiance */}
-      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>L'ambiance souhaitée <span style={{fontSize:9,color:"#9A8F7E",textTransform:"none",letterSpacing:0}}>(optionnel)</span></div>
-      <textarea style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",resize:"none",fontWeight:300,lineHeight:1.6,marginBottom:8}} rows={3} placeholder="Ex : romantique et intime, festif et convivial, nature et dépaysement total, aventure et adrénaline..." value={form.ambiance} onChange={e=>setF("ambiance",e.target.value)}/>
-      <div style={{fontSize:10,color:"#9A8F7E",fontStyle:"italic",fontWeight:300,lineHeight:1.6,marginBottom:20}}>Plus vous nous en dites, plus notre proposition sera précise et adaptée.</div>
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>{tl("act_ambiance")} <span style={{fontSize:9,color:"#9A8F7E",textTransform:"none",letterSpacing:0}}>{tl("act_heure_opt")}</span></div>
+      <textarea style={{width:"100%",padding:"11px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:12,color:"#2E3C4D",outline:"none",resize:"none",fontWeight:300,lineHeight:1.6,marginBottom:8}} rows={3} placeholder={tl("act_ambiance_ph")} value={form.ambiance} onChange={e=>setF("ambiance",e.target.value)}/>
+      <div style={{fontSize:10,color:"#9A8F7E",fontStyle:"italic",fontWeight:300,lineHeight:1.6,marginBottom:20}}>{tl("act_ambiance_tip")}</div>
     </div>
 
     <div style={{padding:"12px 22px 28px",borderTop:"1px solid rgba(46,60,77,0.06)",background:"#FAF8F3",flexShrink:0}}>
       <button onClick={canSubmit?handleSubmit:undefined} disabled={!canSubmit} style={{width:"100%",padding:"15px",borderRadius:12,border:"none",background:canSubmit?"#2E3C4D":"rgba(46,60,77,0.2)",color:canSubmit?"#FAF8F3":"#9A8F7E",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:400,letterSpacing:".2em",textTransform:"uppercase",cursor:canSubmit?"pointer":"not-allowed",transition:"all .2s",display:"flex",alignItems:"center",justifyContent:"center",gap:10}}>
-        <span style={{fontSize:14}}>✦</span> Envoyer ma demande
+        <span style={{fontSize:14}}>✦</span> {tl("act_envoyer")}
       </button>
-      {!canSubmit&&<div style={{textAlign:"center",fontSize:9,color:"#E3C191",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,opacity:.8}}>Complétez les champs requis *</div>}
-      {canSubmit&&<div style={{textAlign:"center",fontSize:9,color:"#9A8F7E",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,fontWeight:300}}>Réponse personnalisée sous 24h</div>}
+      {!canSubmit&&<div style={{textAlign:"center",fontSize:9,color:"#E3C191",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,opacity:.8}}>{tl("act_completer")}</div>}
+      {canSubmit&&<div style={{textAlign:"center",fontSize:9,color:"#9A8F7E",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,fontWeight:300}}>{tl("act_reponse")}</div>}
     </div>
   </div>;
 
@@ -1107,17 +1519,17 @@ function ActivitesPage({onNotif}){
       <img src={IACT} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 40%"}}/>
       <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom,rgba(46,60,77,0.05),rgba(46,60,77,0.75))"}}/>
       <div style={{position:"absolute",bottom:20,left:22}}>
-        <div style={{fontSize:9,letterSpacing:".3em",textTransform:"uppercase",color:"#E3C191",fontWeight:300,marginBottom:6,opacity:.9}}>Sur mesure · Sur demande</div>
-        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:30,fontWeight:200,color:"#FAF8F3",fontStyle:"italic",lineHeight:1,letterSpacing:".02em"}}>Vos activités</div>
+        <div style={{fontSize:9,letterSpacing:".3em",textTransform:"uppercase",color:"#E3C191",fontWeight:300,marginBottom:6,opacity:.9}}>{tl("sur_mesure")}</div>
+        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:30,fontWeight:200,color:"#FAF8F3",fontStyle:"italic",lineHeight:1,letterSpacing:".02em"}}>{tl("vos_activites")}</div>
       </div>
     </div>
 
     <div style={{flex:1,overflowY:"auto",scrollbarWidth:"none",padding:"16px 0 16px"}}>
       <div style={{padding:"0 18px 12px"}}>
-        <div style={{fontSize:11,color:"#2E3C4D",lineHeight:1.8,fontWeight:300,marginBottom:10}}>Choisissez une catégorie d'envie. Votre concierge compose une expérience sur-mesure et revient vers vous avec une proposition personnalisée.</div>
+        <div style={{fontSize:11,color:"#2E3C4D",lineHeight:1.8,fontWeight:300,marginBottom:10}}>{tl("act_intro")}</div>
         <div style={{display:"flex",alignItems:"flex-start",gap:10,padding:"12px 14px",borderRadius:12,background:"#2E3C4D"}}>
           <span style={{fontSize:11,color:"#E3C191",flexShrink:0,marginTop:1}}>✦</span>
-          <span style={{fontSize:10,color:"rgba(250,248,243,0.7)",lineHeight:1.75,fontWeight:300,letterSpacing:".02em"}}>Inhérence ne collabore qu'avec des prestataires sélectionnés pour leur excellence. Chaque expérience est pensée pour correspondre aux standards du luxe que vous méritez.</span>
+          <span style={{fontSize:10,color:"rgba(250,248,243,0.7)",lineHeight:1.75,fontWeight:300,letterSpacing:".02em"}}>{tl("act_qualite")}</span>
         </div>
       </div>
 
@@ -1136,7 +1548,7 @@ function ActivitesPage({onNotif}){
       <div style={{padding:"14px 18px 4px"}}>
         <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",borderRadius:12,background:"rgba(46,60,77,0.03)",border:"1px dashed rgba(46,60,77,0.1)"}}>
           <span style={{fontSize:13}}>💬</span>
-          <div style={{fontSize:10,color:"#9A8F7E",fontWeight:300,lineHeight:1.6}}>Vous avez une idée précise en tête ? Contactez directement votre concierge via la messagerie.</div>
+          <div style={{fontSize:10,color:"#9A8F7E",fontWeight:300,lineHeight:1.6}}>{tl("act_messagerie")}</div>
         </div>
       </div>
     </div>
@@ -1146,6 +1558,7 @@ function ActivitesPage({onNotif}){
 
 // ─── PROFILE TAB COMPONENT ───────────────────────────────────────
 const ALLERGIES_OPTIONS = ["Porc","Gluten","Alcool","Ananas","Fruits de mer","Noix","Lactose","Œufs","Soja","Sésame","Crustacés","Arachides"];
+const MUSIQUE_OPTIONS = ["Jazz","Bossa Nova","Soul","R&B","Afrobeats","Zouk","Reggae","Kompa","Shatta","Salsa","Classique","Lo-fi","Ambient","Pop","Rock","Hip-hop","Rap français","Rap US","Électronique","Silence total"];
 const INDISPENSABLES_OPTIONS = ["Climatisation à l'arrivée","Volets fermés à l'arrivée","Chambre fraîche","Lumière tamisée","Réfrigérateur rempli d'eau à l'arrivée","Silence absolu","Musique d'ambiance à l'arrivée","Plaids disponibles"];
 
 const LEGAL_TEXT = `Politique de confidentialité — Inhérence
@@ -1160,16 +1573,19 @@ Pour toute suppression de compte, vos données seront définitivement effacées 
 
 Inhérence — Martinique · Mise à jour : Mars 2026`;
 
-function ProfileTab(){
+function ProfileTab({onLogout, sejourTermine=false, onPrefsSaved, lang="fr"}){
+  const tl = useT(lang);
   const [section,setSection] = useState(null);
   const [allergies,setAllergies] = useState(["Gluten"]);
   const [customAllergie,setCustomAllergie] = useState("");
   const [showCustomAllergie,setShowCustomAllergie] = useState(false);
-  const [indispensables,setIndispensables] = useState(["Climatisation à l'arrivée","Oreillers fermes"]);
+  const [indispensables,setIndispensables] = useState(["Climatisation à l'arrivée"]);
+  const [musique,setMusique] = useState([]);
   const [compte,setCompte] = useState({prenom:"Anne-Claire",nom:"Dupont",email:"anneclaire@email.com",tel:"+596 696 12 34 56"});
 
   const toggleAllergie = (a) => setAllergies(prev => prev.includes(a) ? prev.filter(x=>x!==a) : [...prev,a]);
   const toggleIndispensable = (a) => setIndispensables(prev => prev.includes(a) ? prev.filter(x=>x!==a) : [...prev,a]);
+  const toggleMusique = (a) => setMusique(prev => prev.includes(a) ? prev.filter(x=>x!==a) : [...prev,a]);
   const addCustomAllergie = () => {
     if(customAllergie.trim()){
       setAllergies(prev=>[...prev,customAllergie.trim()]);
@@ -1182,7 +1598,7 @@ function ProfileTab(){
   if(section==="compte") return <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
     <div style={{display:"flex",alignItems:"center",gap:12,padding:"16px 22px 14px",borderBottom:"1px solid rgba(46,60,77,0.07)"}}>
       <button onClick={()=>setSection(null)} style={{background:"none",border:"none",fontSize:20,color:"#2E3C4D",cursor:"pointer"}}>←</button>
-      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>Gérer mon compte</div>
+      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>{tl("gerer_compte")}</div>
     </div>
     <div style={{flex:1,overflowY:"auto",padding:"20px 22px",scrollbarWidth:"none"}}>
       {[["Prénom","prenom"],["Nom","nom"],["Email","email"],["Téléphone","tel"]].map(([lbl,key])=>(
@@ -1192,13 +1608,13 @@ function ProfileTab(){
         </div>
       ))}
       <button style={{width:"100%",padding:"13px",borderRadius:12,border:"none",background:"#2E3C4D",color:"#E3C191",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",cursor:"pointer",marginTop:6}}>
-        Enregistrer les modifications
+        {tl("enregistrer_modifs")}
       </button>
       <div style={{height:24}}/>
       <div style={{height:"1px",background:"rgba(46,60,77,0.07)",marginBottom:20}}/>
       <div style={{textAlign:"center"}}>
         <span style={{fontSize:10,color:"#E57373",fontWeight:300,letterSpacing:".06em",cursor:"pointer",borderBottom:"1px solid rgba(229,115,115,0.3)",paddingBottom:2}}>
-          Supprimer définitivement mon compte
+          {tl("supprimer_compte")}
         </span>
       </div>
     </div>
@@ -1218,11 +1634,11 @@ function ProfileTab(){
   if(section==="prefs") return <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
     <div style={{display:"flex",alignItems:"center",gap:12,padding:"16px 22px 14px",borderBottom:"1px solid rgba(46,60,77,0.07)"}}>
       <button onClick={()=>setSection(null)} style={{background:"none",border:"none",fontSize:20,color:"#2E3C4D",cursor:"pointer"}}>←</button>
-      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>Mes préférences</div>
+      <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontWeight:300,color:"#2E3C4D",fontStyle:"italic"}}>{tl("mes_prefs")}</div>
     </div>
     <div style={{flex:1,overflowY:"auto",padding:"20px 22px",scrollbarWidth:"none"}}>
       {/* Allergies */}
-      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>🚫 Allergies & intolérances</div>
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:10,fontWeight:400}}>{tl("allergies_lbl")}</div>
       <div style={{display:"flex",flexWrap:"wrap",gap:7,marginBottom:10}}>
         {ALLERGIES_OPTIONS.map((a,i)=>(
           <div key={i} onClick={()=>toggleAllergie(a)} style={{padding:"7px 12px",borderRadius:2,border:`1px solid ${allergies.includes(a)?"#E57373":"rgba(46,60,77,0.12)"}`,background:allergies.includes(a)?"#FFEBEE":"#fff",cursor:"pointer",fontSize:10,color:allergies.includes(a)?"#C62828":"#2E3C4D",fontWeight:300,letterSpacing:".04em",transition:"all .15s"}}>
@@ -1244,8 +1660,8 @@ function ProfileTab(){
       <div style={{height:20}}/>
 
       {/* Indispensables */}
-      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>✨ Indispensables à l'arrivée</div>
-      <div style={{fontSize:10,color:"#9A8F7E",fontWeight:300,marginBottom:10,lineHeight:1.6}}>Ces éléments ne génèrent aucun frais supplémentaire — ils nous aident simplement à préparer votre villa à votre image.</div>
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>{tl("indispensables_lbl")}</div>
+      <div style={{fontSize:10,color:"#9A8F7E",fontWeight:300,marginBottom:10,lineHeight:1.6}}>{tl("indispensables_note")}</div>
       <div style={{display:"flex",flexWrap:"wrap",gap:7,marginBottom:16}}>
         {INDISPENSABLES_OPTIONS.map((a,i)=>(
           <div key={i} onClick={()=>toggleIndispensable(a)} style={{padding:"7px 12px",borderRadius:2,border:`1px solid ${indispensables.includes(a)?"#E3C191":"rgba(46,60,77,0.12)"}`,background:indispensables.includes(a)?"#F5ECD8":"#fff",cursor:"pointer",fontSize:10,color:indispensables.includes(a)?"#C9A96E":"#2E3C4D",fontWeight:300,letterSpacing:".04em",transition:"all .15s"}}>
@@ -1253,8 +1669,20 @@ function ProfileTab(){
           </div>
         ))}
       </div>
-      <button style={{width:"100%",padding:"13px",borderRadius:12,border:"none",background:"#2E3C4D",color:"#E3C191",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",cursor:"pointer"}}>
-        Enregistrer mes préférences
+      <div style={{height:20}}/>
+
+      {/* Musique */}
+      <div style={{fontSize:9,letterSpacing:".2em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>{tl("musique_lbl")}</div>
+      <div style={{fontSize:10,color:"#9A8F7E",fontWeight:300,marginBottom:10,lineHeight:1.6}}>{tl("musique_note")}</div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:7,marginBottom:16}}>
+        {MUSIQUE_OPTIONS.map((a,i)=>(
+          <div key={i} onClick={()=>toggleMusique(a)} style={{padding:"7px 12px",borderRadius:2,border:"1px solid "+(musique.includes(a)?"#2E3C4D":"rgba(46,60,77,0.12)"),background:musique.includes(a)?"#2E3C4D":"#fff",cursor:"pointer",fontSize:10,color:musique.includes(a)?"#E3C191":"#2E3C4D",fontWeight:300,letterSpacing:".04em",transition:"all .15s"}}>
+            {musique.includes(a)&&<span style={{marginRight:4}}>♪</span>}{a}
+          </div>
+        ))}
+      </div>
+      <button onClick={()=>{if(onPrefsSaved)onPrefsSaved({allergies,indispensables,musique});}} style={{width:"100%",padding:"13px",borderRadius:12,border:"none",background:"#2E3C4D",color:"#E3C191",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",cursor:"pointer"}}>
+        {tl("enregistrer_prefs")}
       </button>
       <div style={{height:20}}/>
     </div>
@@ -1266,14 +1694,14 @@ function ProfileTab(){
       <img src={IVO} className="ph-img" alt=""/>
       <div className="prof-av">AC</div>
       <div className="prof-name">Anne-Claire</div>
-      <div className="prof-plan">Résident · Villa Les Alizés</div>
+      
     </div>
 
     {/* Gérer mon compte */}
-    <div className="sec"><div className="sec-title">Mon compte</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+    <div className="sec"><div className="sec-title">{tl("mon_compte")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
     {[
-      {ico:"👤",lbl:"Gérer mon compte",sub:"Nom, email, téléphone",action:()=>setSection("compte")},
-      {ico:"⭐",lbl:"Mes préférences",sub:"Allergies & indispensables",action:()=>setSection("prefs")},
+      {ico:"👤",lbl:tl("gerer_compte"),sub:tl("nom_email_tel"),action:()=>setSection("compte")},
+      {ico:"⭐",lbl:tl("mes_prefs"),sub:tl("allergies_indisp"),action:()=>setSection("prefs")},
     ].map((r,i)=>(
       <div key={i} className="pr-row" onClick={r.action}>
         <div className="pr-lbl">
@@ -1285,19 +1713,19 @@ function ProfileTab(){
     ))}
 
     {/* Contactez-nous */}
-    <div className="sec" style={{marginTop:8}}><div className="sec-title">Assistance</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+    <div className="sec" style={{marginTop:8}}><div className="sec-title">{tl("assistance")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
     <a href="tel:+596696384374" style={{textDecoration:"none"}}>
       <div className="pr-row">
         <div className="pr-lbl">
           <div style={{width:36,height:36,borderRadius:10,background:"#E8F5E9",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15}}>📞</div>
-          <div><div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>Contactez-nous</div><div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>+596 696 38 43 74</div></div>
+          <div><div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>{tl("contactez_nous")}</div><div style={{fontSize:10,color:"#9A8F7E",marginTop:2,fontWeight:300}}>+596 696 38 43 74</div></div>
         </div>
         <span style={{color:"#4CAF50",fontSize:14,fontWeight:500}}>Appeler</span>
       </div>
     </a>
 
     {/* Légal */}
-    <div className="sec" style={{marginTop:8}}><div className="sec-title">Légal</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+    <div className="sec" style={{marginTop:8}}><div className="sec-title">{tl("legal")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
     <div className="pr-row" onClick={()=>setSection("legal")}>
       <div className="pr-lbl">
         <div style={{width:36,height:36,borderRadius:10,background:"rgba(46,60,77,0.06)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15}}>📄</div>
@@ -1306,8 +1734,22 @@ function ProfileTab(){
       <span style={{color:"#9A8F7E",fontSize:18}}>›</span>
     </div>
 
+    {/* Laisser un avis */}
+    {sejourTermine&&<>
+      <div className="sec" style={{marginTop:8}}><div className="sec-title">{tl("votre_experience")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+      <a href="https://search.google.com/local/writereview?placeid=ChIJF-zES1ZHZGIRaMSAdJEes2U&source=g.page.m.np._&laa=nmx-review-solicitation-promoted-recommendation-card" target="_blank" rel="noopener noreferrer" style={{textDecoration:"none"}}>
+        <div className="pr-row" style={{background:"linear-gradient(135deg,#2E3C4D,#3d5166)"}}>
+          <div className="pr-lbl">
+            <div style={{width:36,height:36,borderRadius:10,background:"rgba(227,193,145,0.15)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16}}>⭐</div>
+            <div><div style={{fontSize:12,color:"#FAF8F3",fontWeight:400}}>{tl("avis_google")}</div><div style={{fontSize:10,color:"rgba(227,193,145,0.8)",marginTop:2,fontWeight:300}}>{tl("avis_sub")}</div></div>
+          </div>
+          <span style={{color:"#E3C191",fontSize:18}}>›</span>
+        </div>
+      </a>
+    </>}
+
     {/* Déconnexion */}
-    <div className="logout" style={{marginTop:16}}><span>↩</span> Se déconnecter</div>
+    <div className="logout" style={{marginTop:16}} onClick={onLogout}><span>↩</span> {tl("deconnecter")}</div>
     <div style={{height:24}}/>
   </div>;
 }
@@ -1319,6 +1761,100 @@ const VILLA_DATA = {
   "Les Alizés": {
     nom: "Villa Les Alizés",
     redirect: null, // no specific data yet
+  },
+  "Caryota": {
+    nom: "Villa Caryota",
+    sections: [
+      {
+        id: "confort",
+        icon: "💡",
+        title: "Votre confort & Astuces",
+        items: [
+          {
+            title: "Le Secret de l'Eau Chaude",
+            content: "Une petite particularité de cette villa ! Dans la douche (RDC et piscine), le mitigeur fonctionne à l'inverse. Tournez le robinet à l'opposé de l'indication \"Chaud\". L'eau chaude arrivera en quelques secondes.",
+          },
+          {
+            title: "Climatisation",
+            content: "Pour votre confort et l'écologie, gardez les baies vitrées fermées. Pour activer la clim, insérez la clé située dans le boîtier près des toilettes et tournez-la.",
+          },
+          {
+            title: "Lumières",
+            content: "Les extérieurs sont automatisés (crépuscule / aube). Pour la véranda : activez d'abord l'interrupteur \"Cuisine\" (près de l'alarme), puis celui sous la boîte à clés.",
+          },
+        ],
+      },
+      {
+        id: "reglement",
+        icon: "📜",
+        title: "L'Art de Vivre",
+        items: [
+          {
+            title: "Sérénité & Voisinage",
+            content: "Ce lieu est un sanctuaire de calme. Les fêtes et événements sont strictement interdits (retenue totale de caution en cas de non-respect). Merci de privilégier une ambiance sonore douce pour respecter la tranquillité du voisinage.",
+          },
+          {
+            title: "Piscine au Sel",
+            content: "Pour garder une eau cristalline et éviter les algues, le rinçage est obligatoire avant chaque baignade.",
+          },
+          {
+            title: "Gestion des déchets",
+            content: "En cas de surplus, merci de déposer vos déchets à l'extérieur pour faciliter leur collecte.",
+          },
+        ],
+      },
+      {
+        id: "etat",
+        icon: "📋",
+        title: "Votre État des lieux",
+        type: "etat",
+        content: "Pour votre confort et votre sérénité, nous avons veillé à ce que chaque détail de la villa soit irréprochable. Afin de valider la conformité de votre installation, nous vous remercions de bien vouloir compléter ce document sous 24h. En l'absence de retour de votre part dans ce délai, l'inventaire sera considéré comme validé et conforme.",
+        lien: "https://tally.so/r/RGdM64",
+        ctaLabel: "Compléter l'état des lieux",
+      },
+      {
+        id: "tutos",
+        icon: "🎥",
+        title: "Tutoriels Vidéos",
+        type: "videos",
+        videos: [
+          { label: "Comment sécuriser la barrière piscine", url: "https://www.youtube.com/shorts/g9nb_z_OdPE" },
+          { label: "Débloquer le four", url: "https://www.youtube.com/shorts/E3e8qAU_pVQ" },
+        ],
+      },
+      {
+        id: "quartier",
+        icon: "📍",
+        title: "Votre Quartier & Les Essentiels",
+        type: "lieux",
+        lieux: [
+          {
+            icon: "🥐",
+            nom: "Boulangerie Douceur Caraïbe",
+            detail: "Le Marin",
+            url: "https://www.google.com/maps/dir/Villa+Caryota+Martinique,+Morne+Courbaril,+Le+Marin,+Martinique/Douceurs+Cara%C3%AFbes,+Le+Marin,+Martinique/@14.4812237,-60.8751785,15z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x8c402723547831b9:0x48e063f59582354d!2m2!1d-60.8551548!2d14.4903216!1m5!1m1!1s0x8c40217ff300a327:0x38e319d4f56a5d69!2m2!1d-60.8745257!2d14.4736004!3e0?hl=fr&entry=ttu",
+          },
+          {
+            icon: "🛒",
+            nom: "Carrefour Market",
+            detail: "Le Vauclin · Idéal pour vos premières provisions",
+            url: "https://www.google.com/maps/dir/Villa+Caryota+Martinique,+Morne+Courbaril,+Le+Marin,+Martinique/Carrefour+Express+Vauclin,+Rue+Jean+Jaures,+Le+Vauclin,+Martinique/@14.5187913,-60.890091,13z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x8c402723547831b9:0x48e063f59582354d!2m2!1d-60.8551548!2d14.4903216!1m5!1m1!1s0x8c6a9da35471a4f5:0x5b0db82157d27d38!2m2!1d-60.837521!2d14.5468616!3e0?hl=fr&entry=ttu",
+          },
+          {
+            icon: "🛒",
+            nom: "Pli Bel Price",
+            detail: "Le Marin · Idéal pour vos provisions de la semaine",
+            url: "https://www.google.com/maps/dir/Villa+Caryota+Martinique,+Morne+Courbaril,+Le+Marin,+Martinique/Pli+Bel+Price+Marin,+Le+Marin,+Martinique/@14.4812237,-60.8758862,15z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x8c402723547831b9:0x48e063f59582354d!2m2!1d-60.8551548!2d14.4903216!1m5!1m1!1s0x8c402146fa22cd55:0x57ad7932e0ec6bb5!2m2!1d-60.8758833!2d14.472662!3e0?hl=fr&entry=ttu",
+          },
+          {
+            icon: "⛽",
+            nom: "Station-Service Esso",
+            detail: "Le Marin · La plus proche",
+            url: "https://www.google.com/maps/dir/Villa+Caryota+Martinique,+Morne+Courbaril,+Le+Marin,+Martinique/Esso+Gas+Station,+Marin,+Martinique/@14.4812126,-60.8776174,15z/data=!4m14!4m13!1m5!1m1!1s0x8c402723547831b9:0x48e063f59582354d!2m2!1d-60.8551548!2d14.4903216!1m5!1m1!1s0x8c402141467286a5:0x28e24aadedd158f1!2m2!1d-60.8794375!2d14.4720625!3e0?hl=fr&entry=ttu",
+          },
+        ],
+      },
+    ],
   },
   "Bwa Kanpech": {
     nom: "Villa Bwa Kanpech",
@@ -1422,8 +1958,7 @@ const VILLA_DATA = {
   },
 };
 
-function VillaPage(){
-  const villaKey = "Bwa Kanpech";
+function VillaPage({villaKey="Bwa Kanpech"}){
   const villa = VILLA_DATA[villaKey];
   const [expanded, setExpanded] = useState(null);
 
@@ -1536,16 +2071,293 @@ function VillaPage(){
   </div>;
 }
 
+
+// ─── TRANSLATIONS ─────────────────────────────────────────────────
+const TRANS = {
+  fr: {
+    // Nav tabs resident
+    tab_home:"Résidence", tab_villa:"Villa", tab_services:"Services",
+    tab_activites:"Activités", tab_messages:"Messages", tab_profile:"Profil",
+    // Nav tabs voyageur
+    tab_sejour:"Mon séjour",
+    // Hero
+    votre_residence:"Votre résidence", bienvenue:"Bienvenue",
+    sejour_actif:"Résidence active", sejour_avenir:"Résidence à venir", sejour_termine:"Résidence terminée",
+    sejour_en_cours:"Séjour en cours",
+    // Home sections
+    votre_sejour:"Votre séjour", messagerie:"Messagerie",
+    questionnaire_lbl:"Questionnaire pré-séjour",
+    questionnaire_required:"À compléter avant votre arrivée · Obligatoire",
+    fiche_complete:"✓ Fiche complète", action_requise:"Action requise",
+    votre_havre:"Votre havre de paix",
+    votre_programme:"Votre programme",
+    // Sejour card
+    villa_lbl:"Villa", adresse_lbl:"Adresse", checkin_lbl:"Check-in",
+    checkout_lbl:"Check-out", duree_lbl:"Durée", occupants_lbl:"Occupants",
+    a_preciser:"À préciser", heure_a_definir:"heure à définir", q_nuits:"nuits",
+    concierge_dispo:"Votre équipe disponible 7j/7",
+    // Services
+    nos_services:"Nos services", enrichissez:"Enrichissez votre séjour",
+    reservez:"Réservez en quelques secondes", voir_reserver:"✦ Voir & réserver",
+    en_attente:"⏳ En attente", confirme:"✓ Confirmé", non_dispo:"✗ Non disponible",
+    cliquez_reserver:"9 services · Cliquez pour réserver",
+    pour_votre_confort:"Pour votre confort",
+    demande_envoyee_srv:"✓ Demande envoyée",
+    // Activities
+    sur_mesure:"Sur mesure · Sur demande", vos_activites:"Vos activités",
+    act_intro:"Choisissez une catégorie d'envie. Votre concierge compose une expérience sur-mesure.",
+    act_qualite:"Inhérence ne collabore qu'avec des prestataires sélectionnés pour leur excellence.",
+    act_messagerie:"Vous avez une idée précise ? Contactez directement votre concierge via la messagerie.",
+    act_envoyer:"Envoyer ma demande", act_sent:"Demande envoyée",
+    act_sent_sub:"Votre concierge compose une expérience sur-mesure et vous revient sous 24h.",
+    act_votre_demande:"Votre demande", act_nouvelle:"Nouvelle demande",
+    act_reponse:"Réponse personnalisée sous 24h",
+    act_composons:"Composons votre expérience",
+    act_activite_label:"Activité(s) souhaitée(s)", act_activite_ph:"Décrivez l'activité ou les activités que vous souhaitez réaliser...",
+    act_participants:"Nombre de participants", act_budget:"Budget par personne",
+    act_date:"Date souhaitée", act_heure:"Heure de départ", act_heure_opt:"(optionnel)",
+    act_ambiance:"L'ambiance souhaitée", act_ambiance_ph:"Ex : romantique et intime, festif et convivial...",
+    act_ambiance_tip:"Plus vous nous en dites, plus notre proposition sera précise et adaptée.",
+    act_completer:"Complétez les champs requis *",
+    // Profile
+    mon_compte:"Mon compte", gerer_compte:"Gérer mon compte",
+    nom_email_tel:"Nom, email, téléphone", mes_prefs:"Mes préférences",
+    allergies_indisp:"Allergies & indispensables", assistance:"Assistance",
+    contactez_nous:"Contactez-nous", legal:"Légal",
+    politique_conf:"Politique de confidentialité", rgpd:"RGPD · Données personnelles",
+    deconnecter:"Se déconnecter", enregistrer_modifs:"Enregistrer les modifications",
+    supprimer_compte:"Supprimer définitivement mon compte",
+    allergies_lbl:"🚫 Allergies & intolérances",
+    indispensables_lbl:"✨ Indispensables à l'arrivée",
+    indispensables_note:"Ces éléments ne génèrent aucun frais supplémentaire — ils nous aident simplement à préparer votre villa à votre image.",
+    musique_lbl:"🎵 Style musical",
+    musique_note:"Vos préférences musicales — nous préparerons une playlist à votre arrivée.",
+    enregistrer_prefs:"Enregistrer mes préférences",
+    avis_google:"Laisser un avis Google", avis_sub:"Votre retour nous est précieux",
+    votre_experience:"Votre expérience",
+    mon_vol:"Mon vol", num_vol:"Numéro de vol", num_vol_ph:"Ex : AF 756",
+    vol_note:"Ce numéro apparaîtra dans votre programme de séjour.",
+    // Chat
+    chat_dispo:"● disponible", chat_ph:"Votre message...",
+    // Login
+    connexion_securisee:"🔒 Connexion sécurisée Firebase",
+    se_connecter:"Se connecter", espace_membres:"Espace Membres",
+    concierge_prestige:"Conciergerie de prestige",
+    email_lbl:"Email", mdp_lbl:"Mot de passe", mon_espace:"Mon espace",
+    mdp_oublie:"Mot de passe oublié ?", envoyer_lien:"Envoyer le lien",
+    retour_connexion:"Retour à la connexion",
+    email_envoye:"Email envoyé", mdp_oublie_title:"Mot de passe oublié",
+    mdp_oublie_sub:"Renseignez votre adresse email. Vous recevrez un lien pour créer un nouveau mot de passe.",
+    // Questionnaire
+    q_title:"Questionnaire pré-séjour",
+    q_etape:"Étape", q_sur:"sur",
+    q_continuer:"Continuer", q_retour:"Retour", q_envoyer:"Envoyer ma fiche ✦",
+    q_votre_groupe:"Votre groupe",
+    q_groupe_sub:"Ces informations nous permettent de préparer votre villa dans les moindres détails.",
+    q_adultes:"Adultes", q_enfants:"Enfants", q_moins12:"Moins de 12 ans",
+    q_ages_enfants:"Âges des enfants", q_ages_ph:"Ex : 3 ans, 7 ans, 11 ans",
+    q_bebe:"Équipements bébé", q_bebe_sub:"Pour les tout-petits, nous mettons à disposition sur demande :",
+    q_berceau:"Berceau parapluie", q_chaise:"Chaise haute",
+    q_inclus:"Inclus pour 1", q_supplement:"40 € / unité supplémentaire",
+    q_supplement_lbl:"Supplément estimé", q_aucun_besoin:"Aucun besoin ? Passez simplement à l'étape suivante.",
+    q_allergies:"Allergies & régimes",
+    q_allergies_intro:"Afin de garantir votre sécurité et d'adapter les mets et le panier d'accueil, notre équipe doit connaître toute allergie ou régime alimentaire strict.",
+    q_allergies_lbl:"Précisez vos allergies ou régimes",
+    q_allergies_ph:"Ex : Sans gluten, végétarien, allergie aux fruits de mer, sans produits laitiers...",
+    q_no_allergie:"Aucune allergie ni régime particulier",
+    q_champ_oblig:"⚠ Ce champ est obligatoire",
+    q_occasion:"Occasion spéciale ?",
+    q_occasion_sub:"Un anniversaire, une lune de miel, une célébration en famille ? Nous adorons rendre ces moments inoubliables.",
+    q_occasion_opts:["Anniversaire","Lune de miel","Demande en mariage","Naissance","Fête en famille","Séjour détente","Autre"],
+    q_occasion_autre:"Précisez l'occasion...",
+    q_no_occasion:"Sans occasion particulière ? Passez à l'étape suivante.",
+    q_arrivee:"Heure d'arrivée",
+    q_arrivee_sub:"Nos heures d'accueil sont comprises entre 15h et 20h. Votre concierge vous sera entièrement réservé pour ce moment.",
+    q_arrivee_warn:"⚠️ Suite à de nombreux abus, le dépassement des horaires sera facturé à partir d'une demi-heure de retard. Seuls les imprévus majeurs et justifiables (retard de vol, problème avec la location de voiture, accident de la route, etc.) seront exemptés de frais. Merci pour votre compréhension.",
+    q_select_heure:"⚠ Sélectionnez une heure",
+    q_remise:"Remise des clés",
+    q_remise_sub:"Combien de personnes seront présentes lors de votre accueil à la villa ?",
+    q_personnes_presentes:"Personnes présentes",
+    q_transport:"Comment nous rejoindre ?",
+    q_local:{value:"local",label:"Je réside en Martinique",sub:"Véhicule personnel"},
+    q_avion_voiture:{value:"avion-voiture",label:"J'arrive par avion, j'ai déjà une voiture"},
+    q_avion_sans:{value:"avion-sans-voiture",label:"J'arrive par avion, sans véhicule"},
+    q_vehicle_prop:"Nous collaborons avec un partenaire de confiance pour la location de véhicule. Souhaitez-vous recevoir une proposition sans engagement ?",
+    q_oui:"Oui, volontiers", q_non:"Non, merci",
+    q_type_vehicle:"Type de véhicule", q_boite:"Boîte de vitesse",
+    q_recuperation:"Récupération du véhicule",
+    q_vehicle_opts:["SUV","Berline","Familiale","Citadine"],
+    q_boite_opts:["Manuelle","Automatique","Peu importe"],
+    q_transfert_opts:["À l'aéroport","À la villa (avec service de transfert)"],
+    q_vol:"Votre vol",
+    q_vol_sub:"Ces informations nous permettent d'anticiper votre accueil et de vous assister en cas de retard.",
+    q_num_vol:"Numéro de vol", q_num_vol_ph:"Ex : AF 756",
+    q_vol_tip:"Vous trouverez ce numéro sur votre billet ou confirmation de réservation.",
+    q_pas_vol:"Je n'arrive pas par avion",
+    q_services:"À votre arrivée",
+    q_services_sub:"Souhaitez-vous que nous anticipions vos premières heures dans la villa ?",
+    q_petitdej:{value:"petitdej",label:"Petit-déjeuner signature",sub:"Le lendemain matin · 30 € / pers."},
+    q_courses:{value:"courses",label:"Pré-stockage de courses",sub:"Vos produits, déjà rangés à votre arrivée"},
+    q_aucun_service:{value:"aucun",label:"Aucun service pour l'instant"},
+    q_service_confirm:"✓ Votre demande sera transmise à votre concierge qui reviendra vers vous pour finaliser les détails.",
+    // Popup fin séjour
+    popup_titre:"Votre séjour est terminé",
+    popup_sub:"Votre accès à la plateforme sera désactivé dans 7 jours. Pensez à télécharger vos factures ou informations si besoin.",
+    popup_acces:"Accès disponible jusqu'au",
+    popup_compris:"J'ai compris", popup_fermer:"Fermer",
+    voy_passe:"Passé", voy_encours:"En cours", voy_prevu:"Prévu",
+    fiche_notif_titre:"Questionnaire complété",
+    fiche_notif_sub:"La fiche pré-séjour a été envoyée",
+  },
+  en: {
+    // Nav tabs resident
+    tab_home:"Residence", tab_villa:"Villa", tab_services:"Services",
+    tab_activites:"Activities", tab_messages:"Messages", tab_profile:"Profile",
+    // Nav tabs voyageur
+    tab_sejour:"My stay",
+    // Hero
+    votre_residence:"Your residence", bienvenue:"Welcome",
+    sejour_actif:"Active residence", sejour_avenir:"Upcoming residence", sejour_termine:"Stay completed",
+    sejour_en_cours:"Stay in progress",
+    // Home sections
+    votre_sejour:"Your stay", messagerie:"Messaging",
+    questionnaire_lbl:"Pre-stay questionnaire",
+    questionnaire_required:"To complete before your arrival · Required",
+    fiche_complete:"✓ Form complete", action_requise:"Action required",
+    votre_havre:"Your haven",
+    votre_programme:"Your itinerary",
+    // Sejour card
+    villa_lbl:"Villa", adresse_lbl:"Address", checkin_lbl:"Check-in",
+    checkout_lbl:"Check-out", duree_lbl:"Duration", occupants_lbl:"Guests",
+    a_preciser:"To be specified", heure_a_definir:"time to be defined", q_nuits:"nights",
+    concierge_dispo:"Your team available 7 days/7",
+    // Services
+    nos_services:"Our services", enrichissez:"Enhance your stay",
+    reservez:"Book in seconds", voir_reserver:"✦ View & book",
+    en_attente:"⏳ Pending", confirme:"✓ Confirmed", non_dispo:"✗ Unavailable",
+    cliquez_reserver:"9 services · Click to book",
+    pour_votre_confort:"For your comfort",
+    demande_envoyee_srv:"✓ Request sent",
+    // Activities
+    sur_mesure:"Bespoke · On request", vos_activites:"Your activities",
+    act_intro:"Choose a category. Your concierge will craft a tailor-made experience.",
+    act_qualite:"Inhérence only works with providers selected for their excellence.",
+    act_messagerie:"Have a specific idea? Contact your concierge directly via messaging.",
+    act_envoyer:"Send my request", act_sent:"Request sent",
+    act_sent_sub:"Your concierge will craft a bespoke experience and get back to you within 24h.",
+    act_votre_demande:"Your request", act_nouvelle:"New request",
+    act_reponse:"Personalised response within 24h",
+    act_composons:"Let's compose your experience",
+    act_activite_label:"Desired activity(ies)", act_activite_ph:"Describe the activity or activities you wish to do...",
+    act_participants:"Number of participants", act_budget:"Budget per person",
+    act_date:"Preferred date", act_heure:"Departure time", act_heure_opt:"(optional)",
+    act_ambiance:"Desired atmosphere", act_ambiance_ph:"e.g. romantic & intimate, festive, nature & adventure...",
+    act_ambiance_tip:"The more you tell us, the more tailored our proposal will be.",
+    act_completer:"Complete the required fields *",
+    // Profile
+    mon_compte:"My account", gerer_compte:"Manage my account",
+    nom_email_tel:"Name, email, phone", mes_prefs:"My preferences",
+    allergies_indisp:"Allergies & essentials", assistance:"Assistance",
+    contactez_nous:"Contact us", legal:"Legal",
+    politique_conf:"Privacy policy", rgpd:"GDPR · Personal data",
+    deconnecter:"Sign out", enregistrer_modifs:"Save changes",
+    supprimer_compte:"Permanently delete my account",
+    allergies_lbl:"🚫 Allergies & intolerances",
+    indispensables_lbl:"✨ Essentials on arrival",
+    indispensables_note:"These elements incur no additional charge — they simply help us prepare your villa to your taste.",
+    musique_lbl:"🎵 Music preferences",
+    musique_note:"Your music preferences — we will prepare a playlist for your arrival.",
+    enregistrer_prefs:"Save my preferences",
+    avis_google:"Leave a Google review", avis_sub:"Your feedback means a lot to us",
+    votre_experience:"Your experience",
+    mon_vol:"My flight", num_vol:"Flight number", num_vol_ph:"e.g. AF 756",
+    vol_note:"This number will appear in your stay itinerary.",
+    // Chat
+    chat_dispo:"● available", chat_ph:"Your message...",
+    // Login
+    connexion_securisee:"🔒 Secure Firebase connection",
+    se_connecter:"Sign in", espace_membres:"Members Area",
+    concierge_prestige:"Luxury concierge service",
+    email_lbl:"Email", mdp_lbl:"Password", mon_espace:"My space",
+    mdp_oublie:"Forgot password?", envoyer_lien:"Send link",
+    retour_connexion:"Back to sign in",
+    email_envoye:"Email sent", mdp_oublie_title:"Forgot password",
+    mdp_oublie_sub:"Enter your email address. You will receive a link to create a new password.",
+    // Questionnaire
+    q_title:"Pre-stay questionnaire",
+    q_etape:"Step", q_sur:"of",
+    q_continuer:"Continue", q_retour:"Back", q_envoyer:"Submit my form ✦",
+    q_votre_groupe:"Your group",
+    q_groupe_sub:"This information allows us to prepare your villa in every detail.",
+    q_adultes:"Adults", q_enfants:"Children", q_moins12:"Under 12 years old",
+    q_ages_enfants:"Children's ages", q_ages_ph:"e.g. 3, 7, 11 years old",
+    q_bebe:"Baby equipment", q_bebe_sub:"For little ones, we provide on request:",
+    q_berceau:"Travel cot", q_chaise:"High chair",
+    q_inclus:"Included for 1", q_supplement:"€40 / additional unit",
+    q_supplement_lbl:"Estimated supplement", q_aucun_besoin:"No need? Simply move to the next step.",
+    q_allergies:"Allergies & dietary requirements",
+    q_allergies_intro:"To ensure your safety and adapt the welcome basket and meals, our team must know of any allergy or strict dietary requirement.",
+    q_allergies_lbl:"Specify your allergies or dietary requirements",
+    q_allergies_ph:"e.g. Gluten-free, vegetarian, shellfish allergy, dairy-free...",
+    q_no_allergie:"No allergies or dietary requirements",
+    q_champ_oblig:"⚠ This field is required",
+    q_occasion:"Special occasion?",
+    q_occasion_sub:"A birthday, honeymoon, family celebration? We love making these moments unforgettable.",
+    q_occasion_opts:["Birthday","Honeymoon","Marriage proposal","New baby","Family celebration","Relaxation stay","Other"],
+    q_occasion_autre:"Specify the occasion...",
+    q_no_occasion:"No special occasion? Move to the next step.",
+    q_arrivee:"Arrival time",
+    q_arrivee_sub:"Our welcome hours are between 3pm and 8pm. Your concierge will be entirely devoted to this moment.",
+    q_arrivee_warn:"⚠️ Due to repeated delays, overtime will be charged after 30 minutes. Only major justified incidents (flight delay, car rental issue, road accident, etc.) will be exempt. Thank you for your understanding.",
+    q_select_heure:"⚠ Please select a time",
+    q_remise:"Key handover",
+    q_remise_sub:"How many people will be present at the villa welcome?",
+    q_personnes_presentes:"People present",
+    q_transport:"How will you get here?",
+    q_local:{value:"local",label:"I live in Martinique",sub:"Personal vehicle"},
+    q_avion_voiture:{value:"avion-voiture",label:"I'm flying in and already have a car"},
+    q_avion_sans:{value:"avion-sans-voiture",label:"I'm flying in, without a vehicle"},
+    q_vehicle_prop:"We work with a trusted partner for car rental. Would you like to receive a no-commitment quote?",
+    q_oui:"Yes, please", q_non:"No, thank you",
+    q_type_vehicle:"Vehicle type", q_boite:"Transmission",
+    q_recuperation:"Vehicle pick-up",
+    q_vehicle_opts:["SUV","Saloon","Estate","City car"],
+    q_boite_opts:["Manual","Automatic","No preference"],
+    q_transfert_opts:["At the airport","At the villa (with transfer service)"],
+    q_vol:"Your flight",
+    q_vol_sub:"This information helps us anticipate your arrival and assist you in case of delay.",
+    q_num_vol:"Flight number", q_num_vol_ph:"e.g. AF 756",
+    q_vol_tip:"You will find this number on your ticket or booking confirmation.",
+    q_pas_vol:"I am not travelling by plane",
+    q_services:"On your arrival",
+    q_services_sub:"Would you like us to anticipate your first hours at the villa?",
+    q_petitdej:{value:"petitdej",label:"Signature breakfast",sub:"Next morning · €30 / person"},
+    q_courses:{value:"courses",label:"Pre-stocked groceries",sub:"Your products, already put away on arrival"},
+    q_aucun_service:{value:"aucun",label:"No service for now"},
+    q_service_confirm:"✓ Your request will be forwarded to your concierge who will get back to you to finalise the details.",
+    // Popup fin séjour
+    popup_titre:"Your stay is over",
+    popup_sub:"Your platform access will be deactivated in 7 days. Please download any invoices or information you may need.",
+    popup_acces:"Access available until",
+    popup_compris:"Understood", popup_fermer:"Close",
+    voy_passe:"Past", voy_encours:"In progress", voy_prevu:"Upcoming",
+    fiche_notif_titre:"Questionnaire completed",
+    fiche_notif_sub:"The pre-stay form has been submitted",
+  }
+};
+const useT = (lang) => (key) => TRANS[lang]?.[key] ?? TRANS.fr[key] ?? key;
+
 // ─── QUESTIONNAIRE PRÉ-SÉJOUR ─────────────────────────────────────
-const STEPS = [
-  {id:"occupants", label:"Composition du séjour"},
-  {id:"bebe", label:"Équipements bébé"},
-  {id:"allergies", label:"Allergies & régimes"},
-  {id:"occasion", label:"Occasion spéciale"},
-  {id:"arrivee", label:"Heure d'arrivée"},
-  {id:"remise", label:"Remise des clés"},
-  {id:"transport", label:"Votre transport"},
-  {id:"services", label:"Services à l'arrivée"},
+const getSteps = (t) => [
+  {id:"occupants", label:t("q_votre_groupe")},
+  {id:"bebe", label:t("q_bebe")},
+  {id:"allergies", label:t("q_allergies")},
+  {id:"occasion", label:t("q_occasion")},
+  {id:"arrivee", label:t("q_arrivee")},
+  {id:"remise", label:t("q_remise")},
+  {id:"transport", label:t("q_transport")},
+  {id:"vol", label:t("q_vol")},
+  {id:"services", label:t("q_services")},
 ];
 
 function ProgressBar({step, total}){
@@ -1639,15 +2451,18 @@ function QTimePicker({value, onChange}){
   </div>;
 }
 
-function Questionnaire({onComplete, onClose}){
+function Questionnaire({onComplete, onClose, lang="fr"}){
+  const t = useT(lang);
   const [step, setStep] = useState(0);
-  const [data, setData] = useState({adults:2, children:0, childrenAges:"", berceau:0, chaiseHaute:0, allergies:"", noAllergie:false, occasion:"", arrivalTime:"", remisePersonnes:1, transport:"", vehicleProposal:"", vehicleType:"", boiteVitesse:"", transfertType:"", services:[]});
+  const [data, setData] = useState({adults:2, children:0, childrenAges:"", berceau:0, chaiseHaute:0, allergies:"", noAllergie:false, occasion:"", arrivalTime:"", remisePersonnes:1, numVol:"", pasDeVol:false, transport:"", vehicleProposal:"", vehicleType:"", boiteVitesse:"", transfertType:"", services:[]});
 
   const set = (key, val) => setData(d=>({...d,[key]:val}));
+  const STEPS = getSteps(t);
   const totalSteps = STEPS.length;
   const canNext = () => {
     if(step===2) return data.noAllergie || (data.allergies && data.allergies.trim().length>2);
     if(step===4) return !!data.arrivalTime;
+    if(step===7) return data.pasDeVol || !!data.numVol.trim();
     return true;
   };
 
@@ -1658,7 +2473,7 @@ function Questionnaire({onComplete, onClose}){
     {/* Header */}
     <div style={{padding:"14px 22px 0",flexShrink:0}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:300,color:"#2E3C4D",fontStyle:"italic",letterSpacing:".06em"}}>Questionnaire pré-séjour</div>
+        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontWeight:300,color:"#2E3C4D",fontStyle:"italic",letterSpacing:".06em"}}>{t("q_title")}</div>
         <button onClick={onClose} style={{background:"none",border:"none",fontSize:20,color:"#9A8F7E",cursor:"pointer"}}>×</button>
       </div>
       <ProgressBar step={step+1} total={totalSteps}/>
@@ -1667,113 +2482,145 @@ function Questionnaire({onComplete, onClose}){
     {/* Content */}
     <div style={{flex:1,overflowY:"auto",scrollbarWidth:"none"}}>
 
-      {step===0&&<QStep title="Votre groupe" subtitle="Ces informations nous permettent de préparer votre villa dans les moindres détails.">
-        <QCounter label="Adultes" value={data.adults} onChange={v=>set("adults",v)} min={1}/>
-        <QCounter label="Enfants" sub="Moins de 12 ans" value={data.children} onChange={v=>set("children",v)} min={0}/>
-        {data.children>0&&<QInput label="Âges des enfants" placeholder="Ex : 3 ans, 7 ans, 11 ans" value={data.childrenAges} onChange={v=>set("childrenAges",v)}/>}
+      {step===0&&<QStep title={t("q_votre_groupe")} subtitle={t("q_groupe_sub")}>
+        <QCounter label={t("q_adultes")} value={data.adults} onChange={v=>set("adults",v)} min={1}/>
+        <QCounter label={t("q_enfants")} sub={t("q_moins12")} value={data.children} onChange={v=>set("children",v)} min={0}/>
+        {data.children>0&&<QInput label={t("q_ages_enfants")} placeholder={t("q_ages_ph")} value={data.childrenAges} onChange={v=>set("childrenAges",v)}/>}
       </QStep>}
 
-      {step===1&&<QStep title="Équipements bébé" subtitle="Pour les tout-petits, nous mettons à disposition sur demande :">
-        <QCounter label="Berceau parapluie" sub={data.berceau>1?"40 € / unité supplémentaire":"Inclus pour 1"} value={data.berceau} onChange={v=>set("berceau",v)} min={0}/>
-        <QCounter label="Chaise haute" sub={data.chaiseHaute>1?"40 € / unité supplémentaire":"Inclus pour 1"} value={data.chaiseHaute} onChange={v=>set("chaiseHaute",v)} min={0}/>
+      {step===1&&<QStep title={t("q_bebe")} subtitle={t("q_bebe_sub")}>
+        <QCounter label={t("q_berceau")} sub={data.berceau>1?t("q_supplement"):t("q_inclus")} value={data.berceau} onChange={v=>set("berceau",v)} min={0}/>
+        <QCounter label={t("q_chaise")} sub={data.chaiseHaute>1?t("q_supplement"):t("q_inclus")} value={data.chaiseHaute} onChange={v=>set("chaiseHaute",v)} min={0}/>
         {(data.berceau>1||data.chaiseHaute>1)&&<div style={{background:"#F5ECD8",borderRadius:10,padding:"10px 14px",marginTop:8}}>
-          <div style={{fontSize:10,color:"#C9A96E",fontWeight:400,letterSpacing:".06em"}}>Supplément estimé</div>
+          <div style={{fontSize:10,color:"#C9A96E",fontWeight:400,letterSpacing:".06em"}}>{t("q_supplement_lbl")}</div>
           <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:20,color:"#2E3C4D",fontWeight:300,marginTop:2}}>{((Math.max(0,data.berceau-1)+Math.max(0,data.chaiseHaute-1))*40)} €</div>
         </div>}
         <div style={{height:6}}/>
-        <div style={{fontSize:10,color:"#9A8F7E",fontStyle:"italic",fontWeight:300,lineHeight:1.6}}>Aucun besoin ? Passez simplement à l'étape suivante.</div>
+        <div style={{fontSize:10,color:"#9A8F7E",fontStyle:"italic",fontWeight:300,lineHeight:1.6}}>{t("q_aucun_besoin")}</div>
       </QStep>}
 
-      {step===2&&<QStep title="Allergies & régimes" subtitle="">
-        <div style={{fontSize:11,color:"#2E3C4D",lineHeight:1.8,fontWeight:300,marginBottom:14}}>Afin de garantir votre sécurité et d'adapter les mets et le panier d'accueil, notre équipe doit connaître toute allergie ou régime alimentaire strict.</div>
-        {!data.noAllergie&&<QTextarea label="Précisez vos allergies ou régimes" required placeholder="Ex : Sans gluten, végétarien, allergie aux fruits de mer, sans produits laitiers..." value={data.allergies} onChange={v=>set("allergies",v)}/>}
-        <div onClick={()=>set("noAllergie",!data.noAllergie)} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",borderRadius:10,border:`1px solid ${data.noAllergie?"#E3C191":"rgba(46,60,77,0.1)"}`,background:data.noAllergie?"#F5ECD8":"#fff",cursor:"pointer",marginTop:data.noAllergie?0:8}}>
-          <div style={{width:18,height:18,borderRadius:3,border:`2px solid ${data.noAllergie?"#E3C191":"rgba(46,60,77,0.2)"}`,background:data.noAllergie?"#E3C191":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+      {step===2&&<QStep title={t("q_allergies")} subtitle="">
+        <div style={{fontSize:11,color:"#2E3C4D",lineHeight:1.8,fontWeight:300,marginBottom:14}}>{t("q_allergies_intro")}</div>
+        {!data.noAllergie&&<QTextarea label={t("q_allergies_lbl")} required placeholder={t("q_allergies_ph")} value={data.allergies} onChange={v=>set("allergies",v)}/>}
+        <div onClick={()=>set("noAllergie",!data.noAllergie)} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",borderRadius:10,border:"1px solid "+(data.noAllergie?"#E3C191":"rgba(46,60,77,0.1)"),background:data.noAllergie?"#F5ECD8":"#fff",cursor:"pointer",marginTop:data.noAllergie?0:8}}>
+          <div style={{width:18,height:18,borderRadius:3,border:"2px solid "+(data.noAllergie?"#E3C191":"rgba(46,60,77,0.2)"),background:data.noAllergie?"#E3C191":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
             {data.noAllergie&&<span style={{color:"#fff",fontSize:11,fontWeight:500}}>✓</span>}
           </div>
-          <span style={{fontSize:11,color:"#2E3C4D",fontWeight:300}}>Aucune allergie ni régime particulier</span>
+          <span style={{fontSize:11,color:"#2E3C4D",fontWeight:300}}>{t("q_no_allergie")}</span>
         </div>
-        {!data.noAllergie&&!data.allergies&&<div style={{fontSize:9,color:"#E57373",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,fontWeight:400}}>⚠ Ce champ est obligatoire</div>}
+        {!data.noAllergie&&!data.allergies&&<div style={{fontSize:9,color:"#E57373",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,fontWeight:400}}>{t("q_champ_oblig")}</div>}
       </QStep>}
 
-      {step===3&&<QStep title="Occasion spéciale ?" subtitle="Un anniversaire, une lune de miel, une célébration en famille ? Nous adorons rendre ces moments inoubliables.">
-        <QChipGroup options={["Anniversaire","Lune de miel","Demande en mariage","Naissance","Fête en famille","Séjour détente","Autre"]} value={data.occasion} onChange={v=>set("occasion",v)}/>
-        {data.occasion==="Autre"&&<QInput placeholder="Précisez l'occasion..." value={data.occasionCustom} onChange={v=>set("occasionCustom",v)}/>}
-        <div style={{fontSize:10,color:"#9A8F7E",fontStyle:"italic",fontWeight:300}}>Sans occasion particulière ? Passez à l'étape suivante.</div>
+      {step===3&&<QStep title={t("q_occasion")} subtitle={t("q_occasion_sub")}>
+        <QChipGroup options={t("q_occasion_opts")} value={data.occasion} onChange={v=>set("occasion",v)}/>
+        {data.occasion===t("q_occasion_opts")[6]&&<QInput placeholder={t("q_occasion_autre")} value={data.occasionCustom} onChange={v=>set("occasionCustom",v)}/>}
+        <div style={{fontSize:10,color:"#9A8F7E",fontStyle:"italic",fontWeight:300}}>{t("q_no_occasion")}</div>
       </QStep>}
 
-      {step===4&&<QStep title="Heure d'arrivée" subtitle="Nos heures d'accueil sont comprises entre 15h et 20h. Votre concierge vous sera entièrement réservé pour ce moment.">
+      {step===4&&<QStep title={t("q_arrivee")} subtitle={t("q_arrivee_sub")}>
         <QTimePicker value={data.arrivalTime} onChange={v=>set("arrivalTime",v)}/>
         <div style={{background:"rgba(229,115,115,0.08)",borderRadius:10,padding:"12px 14px",border:"1px solid rgba(229,115,115,0.15)"}}>
-          <div style={{fontSize:10,color:"#C62828",lineHeight:1.7,fontWeight:300}}>⚠️ Suite à de nombreux abus, le dépassement des horaires sera facturé à partir d'une demi-heure de retard. Seuls les imprévus majeurs et justifiables (retard de vol, problème avec la location de voiture, accident de la route, etc.) seront exemptés de frais. Merci pour votre compréhension.</div>
+          <div style={{fontSize:10,color:"#C62828",lineHeight:1.7,fontWeight:300}}>{t("q_arrivee_warn")}</div>
         </div>
-        {!data.arrivalTime&&<div style={{fontSize:9,color:"#E57373",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,fontWeight:400}}>⚠ Sélectionnez une heure</div>}
+        {!data.arrivalTime&&<div style={{fontSize:9,color:"#E57373",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,fontWeight:400}}>{t("q_select_heure")}</div>}
       </QStep>}
 
-      {step===5&&<QStep title="Remise des clés" subtitle="Combien de personnes seront présentes lors de votre accueil à la villa ?">
-        <QCounter label="Personnes présentes" value={data.remisePersonnes} onChange={v=>set("remisePersonnes",v)} min={1}/>
+      {step===5&&<QStep title={t("q_remise")} subtitle={t("q_remise_sub")}>
+        <QCounter label={t("q_personnes_presentes")} value={data.remisePersonnes} onChange={v=>set("remisePersonnes",v)} min={1}/>
       </QStep>}
 
-      {step===6&&<QStep title="Comment nous rejoindre ?" subtitle="">
+      {step===6&&<QStep title={t("q_transport")} subtitle="">
         <QRadioGroup
           value={data.transport}
           onChange={v=>set("transport",v)}
-          options={[
-            {value:"local", label:"Je réside en Martinique", sub:"Véhicule personnel"},
-            {value:"avion-voiture", label:"J'arrive par avion, j'ai déjà une voiture"},
-            {value:"avion-sans-voiture", label:"J'arrive par avion, sans véhicule"},
-          ]}
+          options={[t("q_local"),t("q_avion_voiture"),t("q_avion_sans")]}
         />
         {data.transport==="avion-sans-voiture"&&<>
           <div style={{background:"#F5ECD8",borderRadius:10,padding:"12px 14px",marginBottom:14}}>
-            <div style={{fontSize:11,color:"#C9A96E",lineHeight:1.7,fontWeight:300}}>Nous collaborons avec un partenaire de confiance pour la location de véhicule. Souhaitez-vous recevoir une proposition sans engagement ?</div>
-            <QRadioGroup value={data.vehicleProposal} onChange={v=>set("vehicleProposal",v)} options={[{value:"oui",label:"Oui, volontiers"},{value:"non",label:"Non, merci"}]}/>
+            <div style={{fontSize:11,color:"#C9A96E",lineHeight:1.7,fontWeight:300}}>{t("q_vehicle_prop")}</div>
+            <QRadioGroup value={data.vehicleProposal} onChange={v=>set("vehicleProposal",v)} options={[{value:"oui",label:t("q_oui")},{value:"non",label:t("q_non")}]}/>
           </div>
           {data.vehicleProposal==="oui"&&<>
-            <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:8,fontWeight:400}}>Type de véhicule</div>
-            <QChipGroup options={["SUV","Berline","Familiale","Citadine"]} value={data.vehicleType} onChange={v=>set("vehicleType",v)}/>
-            <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:8,fontWeight:400}}>Boîte de vitesse</div>
-            <QChipGroup options={["Manuelle","Automatique","Peu importe"]} value={data.boiteVitesse} onChange={v=>set("boiteVitesse",v)}/>
-            <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:8,fontWeight:400}}>Récupération du véhicule</div>
-            <QChipGroup options={["À l'aéroport","À la villa (avec service de transfert)"]} value={data.transfertType} onChange={v=>set("transfertType",v)}/>
+            <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:8,fontWeight:400}}>{t("q_type_vehicle")}</div>
+            <QChipGroup options={t("q_vehicle_opts")} value={data.vehicleType} onChange={v=>set("vehicleType",v)}/>
+            <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:8,fontWeight:400}}>{t("q_boite")}</div>
+            <QChipGroup options={t("q_boite_opts")} value={data.boiteVitesse} onChange={v=>set("boiteVitesse",v)}/>
+            <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:8,fontWeight:400}}>{t("q_recuperation")}</div>
+            <QChipGroup options={t("q_transfert_opts")} value={data.transfertType} onChange={v=>set("transfertType",v)}/>
           </>}
         </>}
       </QStep>}
 
-      {step===7&&<QStep title="À votre arrivée" subtitle="Souhaitez-vous que nous anticipions vos premières heures dans la villa ?">
+      {step===7&&<QStep title={t("q_vol")} subtitle={t("q_vol_sub")}>
+        {!data.pasDeVol&&<>
+          <div style={{fontSize:9,letterSpacing:".18em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:400}}>{t("q_num_vol")} <span style={{color:"#E57373"}}>*</span></div>
+          <input style={{width:"100%",padding:"12px 14px",borderRadius:10,border:"1px solid rgba(46,60,77,0.1)",background:"#fff",fontFamily:"'Montserrat',sans-serif",fontSize:13,color:"#2E3C4D",outline:"none",fontWeight:300,letterSpacing:".06em",marginBottom:6}} placeholder={t("q_num_vol_ph")} value={data.numVol} onChange={e=>set("numVol",e.target.value.toUpperCase())}/>
+          <div style={{fontSize:10,color:"#9A8F7E",fontWeight:300,marginBottom:14}}>{t("q_vol_tip")}</div>
+        </>}
+        <div onClick={()=>set("pasDeVol",!data.pasDeVol)} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",borderRadius:10,border:"1px solid "+(data.pasDeVol?"#E3C191":"rgba(46,60,77,0.1)"),background:data.pasDeVol?"#F5ECD8":"#fff",cursor:"pointer"}}>
+          <div style={{width:18,height:18,borderRadius:3,border:"2px solid "+(data.pasDeVol?"#E3C191":"rgba(46,60,77,0.2)"),background:data.pasDeVol?"#E3C191":"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            {data.pasDeVol&&<span style={{color:"#fff",fontSize:11,fontWeight:500}}>✓</span>}
+          </div>
+          <span style={{fontSize:11,color:"#2E3C4D",fontWeight:300}}>{t("q_pas_vol")}</span>
+        </div>
+        {!data.pasDeVol&&!data.numVol&&<div style={{fontSize:9,color:"#E57373",letterSpacing:".1em",textTransform:"uppercase",marginTop:8,fontWeight:400}}>{t("q_champ_oblig")}</div>}
+      </QStep>}
+
+      {step===8&&<QStep title={t("q_services")} subtitle={t("q_services_sub")}>
         <QRadioGroup
           value={data.arriveeService}
           onChange={v=>set("arriveeService",v)}
-          options={[
-            {value:"petitdej", label:"Petit-déjeuner signature", sub:"Le lendemain matin · 30 € / pers."},
-            {value:"courses", label:"Pré-stockage de courses", sub:"Vos produits, déjà rangés à votre arrivée"},
-            {value:"aucun", label:"Aucun service pour l'instant"},
-          ]}
+          options={[t("q_petitdej"),t("q_courses"),t("q_aucun_service")]}
         />
         {(data.arriveeService==="petitdej"||data.arriveeService==="courses")&&<div style={{background:"#E8F5E9",borderRadius:10,padding:"12px 14px",border:"1px solid rgba(76,175,80,0.2)"}}>
-          <div style={{fontSize:10,color:"#2E7D32",fontWeight:400}}>✓ Votre demande sera transmise à votre concierge qui reviendra vers vous pour finaliser les détails.</div>
+          <div style={{fontSize:10,color:"#2E7D32",fontWeight:400}}>{t("q_service_confirm")}</div>
         </div>}
       </QStep>}
     </div>
 
     {/* Footer */}
     <div style={{padding:"12px 22px 28px",borderTop:"1px solid rgba(46,60,77,0.06)",background:"#FAF8F3",flexShrink:0,display:"flex",gap:10}}>
-      {step>0&&<button onClick={prev} style={{padding:"13px 20px",borderRadius:12,border:"1px solid rgba(46,60,77,0.1)",background:"transparent",fontFamily:"'Montserrat',sans-serif",fontSize:10,color:"#2E3C4D",cursor:"pointer",letterSpacing:".12em",textTransform:"uppercase",fontWeight:300}}>Retour</button>}
+      {step>0&&<button onClick={prev} style={{padding:"13px 20px",borderRadius:12,border:"1px solid rgba(46,60,77,0.1)",background:"transparent",fontFamily:"'Montserrat',sans-serif",fontSize:10,color:"#2E3C4D",cursor:"pointer",letterSpacing:".12em",textTransform:"uppercase",fontWeight:300}}>{t("q_retour")}</button>}
       <button onClick={canNext()?next:undefined} style={{flex:1,padding:"14px",borderRadius:12,border:"none",background:canNext()?"#2E3C4D":"rgba(46,60,77,0.2)",color:canNext()?"#FAF8F3":"#9A8F7E",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:400,letterSpacing:".2em",textTransform:"uppercase",cursor:canNext()?"pointer":"not-allowed",transition:"all .2s"}}>
-        {step===totalSteps-1?"Envoyer ma fiche ✦":"Continuer"}
+        {step===totalSteps-1?t("q_envoyer"):t("q_continuer")}
       </button>
     </div>
   </div>;
 }
 
-function ResidentApp({onNotif, bookings=[]}){
+function ResidentApp({onNotif, bookings=[], onLogout}){
   const [tab,setTab]=useState("home");
+  const [lang,setLang]=useState("fr");
   const [chat,setChat]=useState(false);
   const [sheet,setSheet]=useState(null);
   const [sent,setSent]=useState({});
   const [showQuestionnaire,setShowQuestionnaire]=useState(false);
   const [ficheComplete,setFicheComplete]=useState(false);
   const [ficheData,setFicheData]=useState(null);
+  const [showEndPopup,setShowEndPopup]=useState(true);
+  // tl() defined early for tabs
+  const tl = useT(lang);
+
+  // Profil résident — en prod: vient de Firebase selon le compte connecté
+  const residentProfile = {
+    nom: "Anne-Claire Dupont",
+    initials: "AC",
+    villa: "Villa Bwa Kanpech",
+    villaKey: "Bwa Kanpech",
+    adresse: "Chemin Macabou, Le Vauclin, 97280",
+    checkInDate: new Date("2026-03-15"),
+    checkOutDate: new Date("2026-03-22"),
+    checkInLabel: "Samedi 15 mars",
+    checkOutLabel: "Samedi 22 mars",
+    nights: 7,
+  };
+
+  const today = new Date();
+  const sejourStatus = today < residentProfile.checkInDate
+    ? "avenir"
+    : today <= residentProfile.checkOutDate
+      ? "actif"
+      : "termine";
 
   const handleReserve=(recap)=>{
     setSent(s=>({...s,[sheet.id]:true}));
@@ -1785,44 +2632,61 @@ function ResidentApp({onNotif, bookings=[]}){
     setFicheData(data);
     setFicheComplete(true);
     setShowQuestionnaire(false);
+    // Notifier la conciergerie
+    onNotif("__fiche__", data);
   };
 
   const checkinTime = ficheData?.arrivalTime || "À définir";
   const checkoutTime = "avant 12h00";
 
   const tabs=[
-    {id:"home",icon:"⌂",label:"Résidence"},
-    {id:"villa",icon:"🏡",label:"Villa"},
-    {id:"services",icon:"◈",label:"Services"},
-    {id:"activites",icon:"✦",label:"Activités"},
-    {id:"messages",icon:"✉",label:"Messages"},
+    {id:"home",icon:"⌂",label:tl("tab_home")},
+    {id:"villa",icon:"🏡",label:tl("tab_villa")},
+    {id:"services",icon:"◈",label:tl("tab_services")},
+    {id:"activites",icon:"✦",label:tl("tab_activites")},
+    {id:"messages",icon:"✉",label:tl("tab_messages")},
   ];
   if(chat)return <Chat onBack={()=>setChat(false)}/>;
-  if(showQuestionnaire)return <Questionnaire onComplete={handleFicheComplete} onClose={()=>setShowQuestionnaire(false)}/>;
+  if(showQuestionnaire)return <Questionnaire onComplete={handleFicheComplete} onClose={()=>setShowQuestionnaire(false)} lang={lang}/>;
 
   return <>
-    <SB/><TB onAv={()=>setTab("profile")} initials="AC"/>
+    {sejourStatus==="termine"&&showEndPopup&&<div style={{position:"absolute",inset:0,background:"rgba(46,60,77,0.7)",zIndex:100,display:"flex",alignItems:"flex-end",padding:"0 0 20px"}}>
+      <div style={{background:"#FAF8F3",borderRadius:"20px 20px 0 0",padding:"28px 22px 32px",width:"100%"}}>
+        <div style={{width:40,height:4,borderRadius:2,background:"rgba(46,60,77,0.15)",margin:"0 auto 20px"}}/>
+        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:200,color:"#2E3C4D",fontStyle:"italic",marginBottom:10,textAlign:"center"}}>{tl("popup_titre")}</div>
+        <div style={{fontSize:11,color:"#5C6B7A",lineHeight:1.8,fontWeight:300,textAlign:"center",marginBottom:20}}>{tl("popup_sub")}</div>
+        <div style={{background:"#FFF8E1",borderRadius:12,padding:"12px 16px",marginBottom:20,border:"1px solid rgba(227,193,145,0.3)"}}>
+          <div style={{fontSize:10,color:"#C9A96E",lineHeight:1.7,fontWeight:300}}>⏱ {tl("popup_acces")} {new Date(residentProfile.checkOutDate.getTime()+7*24*60*60*1000).toLocaleDateString(lang==="en"?"en-GB":"fr-FR",{day:"numeric",month:"long"})}</div>
+        </div>
+        <button onClick={()=>setShowEndPopup(false)} style={{width:"100%",padding:"14px",borderRadius:12,border:"none",background:"#2E3C4D",color:"#E3C191",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:400,letterSpacing:".18em",textTransform:"uppercase",cursor:"pointer",marginBottom:10}}>{tl("popup_compris")}</button>
+        <button onClick={()=>setShowEndPopup(false)} style={{width:"100%",padding:"12px",borderRadius:12,border:"1px solid rgba(46,60,77,0.1)",background:"transparent",color:"#9A8F7E",fontFamily:"'Montserrat',sans-serif",fontSize:10,cursor:"pointer",letterSpacing:".1em"}}>{tl("popup_fermer")}</button>
+      </div>
+    </div>}
+    <SB/><TB onAv={()=>setTab("profile")} initials="AC" lang={lang} setLang={setLang}/>
     <div className="scroll fade">
 
       {tab==="home"&&<>
         <div className="hero">
           <img src={IB} className="hero-img" alt=""/>
           <div className="hero-ring"/><div className="hero-ring2"/>
-          <div className="hero-tag">Votre résidence</div>
-          <div className="hero-name">Villa Les Alizés</div>
-          <div className="hero-badge"><div className="hero-dot"/><span>Résidence active</span></div>
+          <div className="hero-tag">{tl("votre_residence")}</div>
+          <div className="hero-name">{residentProfile.villa}</div>
+          <div className="hero-badge" style={{background:sejourStatus==="actif"?"rgba(76,175,80,0.15)":sejourStatus==="avenir"?"rgba(227,193,145,0.15)":"rgba(46,60,77,0.2)"}}>
+            <div className="hero-dot" style={{background:sejourStatus==="actif"?"#4CAF50":sejourStatus==="avenir"?"#E3C191":"#9A8F7E"}}/>
+            <span>{sejourStatus==="actif"?tl("sejour_actif"):sejourStatus==="avenir"?tl("sejour_avenir"):tl("sejour_termine")}</span>
+          </div>
         </div>
 
         {/* Infos résidence */}
         <div className="sec">
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:2}}>
-            <div className="sec-title">Votre séjour</div>
+            <div className="sec-title">{tl("votre_sejour")}</div>
             {!ficheComplete&&<div onClick={()=>setShowQuestionnaire(true)} style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer",padding:"5px 10px",borderRadius:20,background:"rgba(229,115,115,0.08)",border:"1px solid rgba(229,115,115,0.2)"}}>
               <div style={{width:8,height:8,borderRadius:"50%",background:"#E57373",boxShadow:"0 0 0 3px rgba(229,115,115,0.25)",animation:"pulse 1.5s infinite"}}/>
-              <span style={{fontSize:9,color:"#C62828",letterSpacing:".12em",textTransform:"uppercase",fontWeight:500}}>Action requise</span>
+              <span style={{fontSize:9,color:"#C62828",letterSpacing:".12em",textTransform:"uppercase",fontWeight:500}}>{tl("action_requise")}</span>
             </div>}
             {ficheComplete&&<div style={{display:"flex",alignItems:"center",gap:5,padding:"5px 10px",borderRadius:20,background:"rgba(76,175,80,0.08)"}}>
-              <span style={{fontSize:9,color:"#2E7D32",letterSpacing:".12em",textTransform:"uppercase",fontWeight:400}}>✓ Fiche complète</span>
+              <span style={{fontSize:9,color:"#2E7D32",letterSpacing:".12em",textTransform:"uppercase",fontWeight:400}}>{tl("fiche_complete")}</span>
             </div>}
           </div>
           <div className="sec-line"><div className="ocre-bar"/></div>
@@ -1831,8 +2695,8 @@ function ResidentApp({onNotif, bookings=[]}){
         {!ficheComplete&&<div onClick={()=>setShowQuestionnaire(true)} style={{margin:"0 18px 12px",background:"#fff",borderRadius:16,padding:"16px 18px",border:"1.5px dashed rgba(229,115,115,0.3)",cursor:"pointer",display:"flex",alignItems:"center",gap:14}}>
           <div style={{width:42,height:42,borderRadius:12,background:"rgba(229,115,115,0.08)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>📋</div>
           <div style={{flex:1}}>
-            <div style={{fontSize:13,color:"#2E3C4D",fontWeight:400,letterSpacing:".02em"}}>Questionnaire pré-séjour</div>
-            <div style={{fontSize:10,color:"#C62828",marginTop:3,fontWeight:300}}>À compléter avant votre arrivée · Obligatoire</div>
+            <div style={{fontSize:13,color:"#2E3C4D",fontWeight:400,letterSpacing:".02em"}}>{tl("questionnaire_lbl")}</div>
+            <div style={{fontSize:10,color:"#C62828",marginTop:3,fontWeight:300}}>{tl("questionnaire_required")}</div>
           </div>
           <span style={{color:"#9A8F7E",fontSize:18}}>›</span>
         </div>}
@@ -1840,12 +2704,12 @@ function ResidentApp({onNotif, bookings=[]}){
         <div className="card" style={{cursor:"default"}}>
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
             {[
-              ["🏡","Villa","Les Alizés"],
-              ["📍","Adresse","Route de la Pointe, Le Diamant, 97223"],
-              ["🔑","Check-in",`Samedi 15 mars · ${ficheData?.arrivalTime||"heure à définir"}`],
-              ["🚪","Check-out","Samedi 22 mars · avant 12h00"],
-              ["🌙","Durée","7 nuits"],
-              ["👥","Occupants", ficheData ? `${ficheData.adults} adulte(s)${ficheData.children>0?`, ${ficheData.children} enfant(s)`:""}` : "À préciser"],
+              ["🏡",tl("villa_lbl"),residentProfile.villa],
+              ["📍",tl("adresse_lbl"),residentProfile.adresse],
+              ["🔑",tl("checkin_lbl"),residentProfile.checkInLabel+" · "+(ficheData?.arrivalTime||tl("heure_a_definir"))],
+              ["🚪",tl("checkout_lbl"),residentProfile.checkOutLabel+" · "+tl("q_remise")+" 12h00"],
+              ["🌙",tl("duree_lbl"),residentProfile.nights+" "+tl("q_nuits","nights")],
+              ["👥",tl("occupants_lbl"), ficheData ? ficheData.adults+" "+tl("q_adultes").toLowerCase()+(ficheData.children>0?", "+ficheData.children+" "+tl("q_enfants").toLowerCase():"") : tl("a_preciser")],
             ].map(([ico,lbl,val],i)=>(
               <div key={i} style={{display:"flex",alignItems:"flex-start",gap:12}}>
                 <span style={{fontSize:14,flexShrink:0,marginTop:1}}>{ico}</span>
@@ -1858,11 +2722,11 @@ function ResidentApp({onNotif, bookings=[]}){
           </div>
         </div>
 
-        <div className="ambient"><img src={IVO} alt=""/><div className="ambient-ov"/><div className="ambient-text"><p>Votre havre de paix</p><span>Inhérence · Martinique</span></div></div>
+        <div className="ambient"><img src={IVO} alt=""/><div className="ambient-ov"/><div className="ambient-text"><p>{tl("votre_havre")}</p><span>Inhérence · Martinique</span></div></div>
 
-        <div className="sec"><div className="sec-title">Messagerie</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+        <div className="sec"><div className="sec-title">{tl("messagerie")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
         <div className="card" onClick={()=>setChat(true)}>
-          <div className="msg-item"><div className="msg-av">IN</div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Votre équipe disponible 7j/7</div></div></div>
+          <div className="msg-item"><div className="msg-av" style={{padding:4,background:"#2E3C4D",overflow:"hidden"}}><img src={ILI} style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">{tl("concierge_dispo")}</div></div></div>
         </div>
         <div style={{height:16}}/>
       </>}
@@ -1871,9 +2735,9 @@ function ResidentApp({onNotif, bookings=[]}){
         <div className="hero" style={{marginTop:4}}>
           <img src={IMASSAGE} className="hero-img" alt=""/>
           <div className="hero-ring"/><div className="hero-ring2"/>
-          <div className="hero-tag">Pour votre confort</div>
-          <div className="hero-name">Nos services</div>
-          <div className="hero-badge"><div className="hero-dot"/><span>9 services · Cliquez pour réserver</span></div>
+          <div className="hero-tag">{tl("pour_votre_confort")}</div>
+          <div className="hero-name">{tl("nos_services")}</div>
+          <div className="hero-badge"><div className="hero-dot"/><span>{tl("cliquez_reserver")}</span></div>
         </div>
         {CATEGORIES.map((cat,ci)=>(
           <div key={ci}>
@@ -1885,7 +2749,7 @@ function ResidentApp({onNotif, bookings=[]}){
                   <div className="service-name">{s.name}</div>
                   <div className="service-tagline">{s.tagline}</div>
                   <div className="service-footer">
-                    <div className="service-tag">{sent[s.id]?"✓ Demande envoyée":"✦ Voir & réserver"}</div>
+                    <div className="service-tag">{sent[s.id]?tl("demande_envoyee_srv"):tl("voir_reserver")}</div>
                     <div className="service-price">{s.startingPrice}</div>
                   </div>
                 </div>
@@ -1897,17 +2761,17 @@ function ResidentApp({onNotif, bookings=[]}){
       </>}
 
       {tab==="messages"&&<>
-        <div className="sec" style={{marginTop:6}}><div className="sec-title">Messagerie</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+        <div className="sec" style={{marginTop:6}}><div className="sec-title">{tl("messagerie")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
         <div className="card" onClick={()=>setChat(true)}>
-          <div className="msg-item"><div className="msg-av">IN</div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Votre équipe disponible 7j/7</div></div></div>
+          <div className="msg-item"><div className="msg-av" style={{padding:4,background:"#2E3C4D",overflow:"hidden"}}><img src={ILI} style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">{tl("concierge_dispo")}</div></div></div>
         </div>
         <div style={{height:12}}/>
       </>}
 
-      {tab==="villa"&&<VillaPage/>}
-      {tab==="activites"&&<ActivitesPage onNotif={onNotif}/>}
+      {tab==="villa"&&<VillaPage villaKey={residentProfile.villaKey}/>}
+      {tab==="activites"&&<ActivitesPage onNotif={onNotif} lang={lang}/>}
 
-      {tab==="profile"&&<ProfileTab/>}
+      {tab==="profile"&&<ProfileTab onLogout={onLogout} sejourTermine={sejourStatus==="termine"} onPrefsSaved={(p)=>onNotif("__prefs__",p)} lang={lang}/>}
     </div>
     <BN tabs={tabs} active={tab} set={setTab}/>
     {sheet&&<ServiceSheet service={sheet} onClose={()=>setSheet(null)} onReserve={handleReserve} sent={!!sent[sheet?.id]}/>}
@@ -1930,11 +2794,14 @@ const VOYAGEUR_CATS = [
   },
 ];
 
-function VoyageurApp({onNotif}){
+function VoyageurApp({onNotif, onLogout}){
   const [tab,setTab]=useState("home");
+  const [lang,setLang]=useState("fr");
+  const tl = useT(lang);
   const [chat,setChat]=useState(false);
   const [sheet,setSheet]=useState(null);
   const [sent,setSent]=useState({});
+  const [numVol,setNumVol]=useState("AF 756");
 
   const handleReserve=(recap)=>{
     setSent(s=>({...s,[sheet.id]:true}));
@@ -1943,16 +2810,16 @@ function VoyageurApp({onNotif}){
   };
 
   const tabs=[
-    {id:"home",icon:"✈️",label:"Mon séjour"},
-    {id:"services",icon:"◈",label:"Services"},
-    {id:"activites",icon:"✦",label:"Activités"},
-    {id:"messages",icon:"✉",label:"Messages"},
-    {id:"profile",icon:"◎",label:"Profil"},
+    {id:"home",icon:"✈️",label:tl("tab_sejour")},
+    {id:"services",icon:"◈",label:tl("tab_services")},
+    {id:"activites",icon:"✦",label:tl("tab_activites")},
+    {id:"messages",icon:"✉",label:tl("tab_messages")},
+    {id:"profile",icon:"◎",label:tl("tab_profile")},
   ];
   if(chat)return <Chat onBack={()=>setChat(false)}/>;
 
   return <>
-    <SB/><TB onAv={()=>setTab("profile")} initials="TB"/>
+    <SB/><TB onAv={()=>setVtab("profile")} initials="TB" lang={lang} setLang={setLang}/>
     <div className="scroll fade">
 
       {tab==="home"&&<>
@@ -1964,10 +2831,10 @@ function VoyageurApp({onNotif}){
           <div className="hero-badge"><div className="hero-dot"/><span>Séjour en cours</span></div>
         </div>
 
-        <div className="sec"><div className="sec-title">Votre programme</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+        <div className="sec"><div className="sec-title">{t("Votre programme","Your itinerary")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
 
         {[
-          {icon:"✈️",date:"14 mars",desc:"Arrivée · Vol AF 756 · 16h35",status:"done"},
+          {icon:"✈️",date:"14 mars",desc:"Arrivée · Vol "+(numVol||"AF 756")+" · 16h35",status:"done"},
           {icon:"🚗",date:"14 mars",desc:"Navette aéroport · Prise en charge à 17h00",status:"done"},
           {icon:"🍽️",date:"15 mars",desc:"Dîner gastronomique · Chef à domicile",status:"ongoing"},
           {icon:"🧖",date:"16 mars",desc:"Massage Signature · 10h00",status:"planned"},
@@ -1982,14 +2849,14 @@ function VoyageurApp({onNotif}){
                 <div className="prest-date">{item.date}</div>
               </div>
               <div className={`badge ${item.status==="done"?"b-dn":item.status==="ongoing"?"b-on":"b-pl"}`}>
-                {item.status==="done"?"Passé":item.status==="ongoing"?"En cours":"Prévu"}
+                {item.status==="done"?tl("voy_passe","Past"):item.status==="ongoing"?"En cours":"Prévu"}
               </div>
             </div>
           </div>
         ))}
 
         <div className="card" onClick={()=>setChat(true)}>
-          <div className="msg-item"><div className="msg-av">IN</div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Votre équipe disponible 7j/7</div></div><div className="msg-dot">1</div></div>
+          <div className="msg-item"><div className="msg-av" style={{padding:4,background:"#2E3C4D",overflow:"hidden"}}><img src={ILI} style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Votre équipe disponible 7j/7</div></div><div className="msg-dot">1</div></div>
         </div>
         <div style={{height:16}}/>
       </>}
@@ -2012,7 +2879,7 @@ function VoyageurApp({onNotif}){
                   <div className="service-name">{s.name}</div>
                   <div className="service-tagline">{s.tagline}</div>
                   <div className="service-footer">
-                    <div className="service-tag">{sent[s.id]?"✓ Demande envoyée":"✦ Voir & réserver"}</div>
+                    <div className="service-tag">{sent[s.id]?tl("demande_envoyee_srv"):tl("voir_reserver")}</div>
                     <div className="service-price">{s.startingPrice}</div>
                   </div>
                 </div>
@@ -2026,22 +2893,23 @@ function VoyageurApp({onNotif}){
       {tab==="messages"&&<>
         <div className="sec" style={{marginTop:6}}><div className="sec-title">Messagerie</div><div className="sec-line"><div className="ocre-bar"/></div></div>
         <div className="card" onClick={()=>setChat(true)}>
-          <div className="msg-item"><div className="msg-av">IN</div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Votre équipe disponible 7j/7</div></div></div>
+          <div className="msg-item"><div className="msg-av" style={{padding:4,background:"#2E3C4D",overflow:"hidden"}}><img src={ILI} style={{width:"100%",height:"100%",objectFit:"contain",filter:"brightness(0) invert(1)"}}/></div><div style={{flex:1,minWidth:0}}><div className="msg-name">Concierge Inhérence</div><div className="msg-prev">Votre équipe disponible 7j/7</div></div></div>
         </div>
         <div style={{height:12}}/>
       </>}
 
-      {tab==="activites"&&<ActivitesPage onNotif={onNotif}/>}
+      {tab==="activites"&&<ActivitesPage onNotif={onNotif} lang={lang}/>}
 
       {tab==="profile"&&<>
         <div className="profile-hero"><img src={IZENTHAI} className="ph-img" alt=""/><div className="prof-av">TB</div><div className="prof-name">Thomas Bernard</div><div className="prof-plan">Voyageur · Martinique · Mars 2026</div></div>
         <div className="sec"><div className="sec-title">Mon séjour</div><div className="sec-line"><div className="ocre-bar"/></div></div>
         <div className="card" style={{cursor:"default"}}>
           {[
-            ["✈️","Destination","Martinique · Fort-de-France"],
-            ["📅","Arrivée","14 mars 2026"],
-            ["📅","Départ","21 mars 2026"],
-            ["🌙","Durée","7 nuits"],
+            ["✈️",tl("adresse_lbl")||"Destination","Martinique · Fort-de-France"],
+            ["📅",tl("checkin_lbl"),"14 mars 2026"],
+            ["📅",tl("checkout_lbl"),"21 mars 2026"],
+            ["🌙",tl("duree_lbl"),lang==="en"?"7 nights":"7 nuits"],
+            ["✈️",tl("num_vol"),numVol||(lang==="en"?"Not provided":"Non renseigné")],
           ].map(([ico,lbl,val],i)=>(
             <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<3?"1px solid rgba(46,60,77,0.05)":"none"}}>
               <span style={{fontSize:14,flexShrink:0}}>{ico}</span>
@@ -2050,11 +2918,17 @@ function VoyageurApp({onNotif}){
             </div>
           ))}
         </div>
-        <div className="sec" style={{marginTop:8}}><div className="sec-title">Mes préférences</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+        <div className="sec" style={{marginTop:8}}><div className="sec-title">{tl("mon_vol")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
+        <div className="card" style={{cursor:"default"}}>
+          <div style={{fontSize:9,letterSpacing:".14em",textTransform:"uppercase",color:"#9A8F7E",marginBottom:6,fontWeight:300}}>{tl("num_vol")}</div>
+          <input style={{width:"100%",padding:"10px 12px",borderRadius:8,border:"1px solid rgba(46,60,77,0.1)",background:"#FAF8F3",fontFamily:"'Montserrat',sans-serif",fontSize:13,color:"#2E3C4D",outline:"none",fontWeight:400,letterSpacing:".08em"}} placeholder={tl("num_vol_ph")} value={numVol} onChange={e=>setNumVol(e.target.value.toUpperCase())}/>
+          <div style={{fontSize:9,color:"#9A8F7E",marginTop:6,fontWeight:300}}>{tl("vol_note")}</div>
+        </div>
+        <div className="sec" style={{marginTop:8}}><div className="sec-title">{tl("mes_prefs")}</div><div className="sec-line"><div className="ocre-bar"/></div></div>
         <div className="card" style={{cursor:"default"}}>
           <div className="pref-block" style={{marginBottom:0}}><div className="pref-title">✨ Indispensables</div><div className="chips"><span className="chip chip-ocre">Végétarien</span><span className="chip chip-ocre">Rhum arrangé</span></div></div>
         </div>
-        <div className="logout"><span>↩</span> Se déconnecter</div>
+        <div className="logout" onClick={onLogout}><span>↩</span> Se déconnecter</div>
         <div style={{height:20}}/>
       </>}
     </div>
@@ -2067,6 +2941,38 @@ function Login({onLogin}){
   const [role,setRole]=useState("resident");
   const [email,setEmail]=useState("");
   const [pass,setPass]=useState("");
+  const [view,setView]=useState("login"); // "login" | "forgot" | "sent"
+
+  if(view==="forgot"||view==="sent") return <div className="login-wrap fade">
+    <div className="login-hero"><img src={IV} className="login-bg" alt=""/><div className="login-ov"/>
+      <div className="login-content"><img src={ILI} className="login-logo" alt="Inhérence" style={{filter:"brightness(0) invert(1)"}}/>
+        <div className="login-tag">Conciergerie de prestige</div>
+        <div className="login-title">Espace Membres</div>
+      </div>
+    </div>
+    <div className="login-body">
+      {view==="forgot"&&<>
+        <div style={{textAlign:"center",marginBottom:4}}>
+          <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:200,color:"#2E3C4D",fontStyle:"italic",marginBottom:8}}>Mot de passe oublié</div>
+          <div style={{fontSize:11,color:"#9A8F7E",fontWeight:300,lineHeight:1.7}}>Renseignez votre adresse email. Vous recevrez un lien pour créer un nouveau mot de passe.</div>
+        </div>
+        <div><div className="login-lbl">Email</div><input className="login-inp" type="email" placeholder="votre@email.com" value={email} onChange={e=>setEmail(e.target.value)} onKeyDown={e=>e.key==="Enter"&&setView("sent")}/></div>
+        <button className="login-btn" onClick={()=>email.trim()&&setView("sent")}>Envoyer le lien</button>
+        <div style={{textAlign:"center"}}>
+          <span onClick={()=>setView("login")} style={{fontSize:10,color:"#9A8F7E",cursor:"pointer",letterSpacing:".08em",fontWeight:300,borderBottom:"1px solid rgba(46,60,77,0.15)",paddingBottom:2}}>Retour à la connexion</span>
+        </div>
+      </>}
+      {view==="sent"&&<>
+        <div style={{textAlign:"center",padding:"10px 0"}}>
+          <div style={{width:56,height:56,borderRadius:"50%",background:"#E8F5E9",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,margin:"0 auto 16px"}}>✉</div>
+          <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:200,color:"#2E3C4D",fontStyle:"italic",marginBottom:8}}>Email envoyé</div>
+          <div style={{fontSize:11,color:"#9A8F7E",fontWeight:300,lineHeight:1.8}}>Un lien de réinitialisation a été envoyé à<br/><span style={{color:"#2E3C4D",fontWeight:400}}>{email}</span></div>
+        </div>
+        <button className="login-btn" onClick={()=>{setView("login");setEmail("");}}>Retour à la connexion</button>
+      </>}
+    </div>
+  </div>;
+
   return <div className="login-wrap fade">
     <div className="login-hero"><img src={IV} className="login-bg" alt=""/><div className="login-ov"/>
       <div className="login-content"><img src={ILI} className="login-logo" alt="Inhérence" style={{filter:"brightness(0) invert(1)"}}/>
@@ -2078,13 +2984,19 @@ function Login({onLogin}){
       <div>
         <div className="login-lbl">Mon espace</div>
         <div className="login-roles" style={{flexWrap:"wrap",gap:8}}>
-          <button className={`role-btn ${role==="resident"?"sel":""}`} style={{flex:"1 1 auto"}} onClick={()=>setRole("resident")}>Résident</button>
-          <button className={`role-btn ${role==="voyageur"?"sel":""}`} style={{flex:"1 1 auto"}} onClick={()=>setRole("voyageur")}>Voyageur</button>
-          <button className={`role-btn ${role==="concierge"?"sel":""}`} style={{flex:"1 0 100%"}} onClick={()=>setRole("concierge")}>La Conciergerie</button>
+          <button className={"role-btn "+(role==="resident"?"sel":"")} style={{flex:"1 1 auto"}} onClick={()=>setRole("resident")}>Résident</button>
+          <button className={"role-btn "+(role==="voyageur"?"sel":"")} style={{flex:"1 1 auto"}} onClick={()=>setRole("voyageur")}>Voyageur</button>
+          <button className={"role-btn "+(role==="concierge"?"sel":"")} style={{flex:"1 0 100%"}} onClick={()=>setRole("concierge")}>La Conciergerie</button>
         </div>
       </div>
       <div><div className="login-lbl">Email</div><input className="login-inp" type="email" placeholder="votre@email.com" value={email} onChange={e=>setEmail(e.target.value)}/></div>
-      <div><div className="login-lbl">Mot de passe</div><input className="login-inp" type="password" placeholder="••••••••" value={pass} onChange={e=>setPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&onLogin(role)}/></div>
+      <div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
+          <div className="login-lbl" style={{marginBottom:0}}>Mot de passe</div>
+          <span onClick={()=>setView("forgot")} style={{fontSize:9,color:"#9A8F7E",cursor:"pointer",letterSpacing:".1em",fontWeight:300,borderBottom:"1px solid rgba(46,60,77,0.15)",paddingBottom:1}}>Mot de passe oublié ?</span>
+        </div>
+        <input className="login-inp" type="password" placeholder="••••••••" value={pass} onChange={e=>setPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&onLogin(role)}/>
+      </div>
       <button className="login-btn" onClick={()=>onLogin(role)}>Se connecter</button>
       <div style={{textAlign:"center",fontSize:9,color:"#9A8F7E",letterSpacing:".12em",textTransform:"uppercase",fontWeight:300}}>🔒 Connexion sécurisée Firebase</div>
     </div>
@@ -2094,9 +3006,29 @@ function Login({onLogin}){
 export default function App(){
   const [session,setSession]=useState(null);
   const [toast,setToast]=useState(null);
+  const [clientPrefs,setClientPrefs]=useState(null);
+  const [clientFiche,setClientFiche]=useState(null);
   const [bookings,setBookings]=useState([{id:1,client:"Sophie M.",service:"Massages Signature",recap:[{l:"Technique",v:"Relaxant / Californien"},{l:"Soin 1h",v:"2 pers."},{l:"Date",v:"2025-03-15"}],time:"10:34",status:"pending"}]);
 
   const handleNotif=(name,recap)=>{
+    if(name==="__prefs__"){
+      setClientPrefs(recap);
+      return;
+    }
+    if(name==="__fiche__"){
+      setClientFiche(recap);
+      // Ajouter une notif visible dans l'interface conciergerie
+      setBookings(b=>[...b,{
+        id:Date.now(),
+        client:"Anne-Claire",
+        service:"__fiche_complete__",
+        recap:recap,
+        time:new Date().toLocaleTimeString("fr",{hour:"2-digit",minute:"2-digit"}),
+        status:"info",
+        isFiche:true,
+      }]);
+      return;
+    }
     setToast(name);
     setBookings(b=>[...b,{id:Date.now(),client:"Anne-Claire",service:name,recap,time:new Date().toLocaleTimeString("fr",{hour:"2-digit",minute:"2-digit"}),status:"pending"}]);
     setTimeout(()=>setToast(null),4000);
@@ -2108,9 +3040,9 @@ export default function App(){
     <style>{GS}</style>
     <div className="phone">
       {!session&&<Login onLogin={r=>setSession(r)}/>}
-      {session==="resident"&&<ResidentApp onNotif={handleNotif} bookings={bookings}/>}
-      {session==="voyageur"&&<VoyageurApp onNotif={handleNotif}/>}
-      {session==="concierge"&&<ConciergeApp pendingBookings={bookings} onConfirm={handleConfirm} onDecline={handleDecline}/>}
+      {session==="resident"&&<ResidentApp onNotif={handleNotif} bookings={bookings} onLogout={()=>setSession(null)}/>}
+      {session==="voyageur"&&<VoyageurApp onNotif={handleNotif} onLogout={()=>setSession(null)}/>}
+      {session==="concierge"&&<ConciergeApp pendingBookings={bookings} onConfirm={handleConfirm} onDecline={handleDecline} onLogout={()=>setSession(null)} clientPrefs={clientPrefs} clientFiche={clientFiche}/>}
       {toast&&<Toast service={toast} onHide={()=>setToast(null)}/>}
     </div>
   </>;
