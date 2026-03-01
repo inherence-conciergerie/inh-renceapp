@@ -1766,7 +1766,7 @@ function Questionnaire({onComplete, onClose}){
   </div>;
 }
 
-function ResidentApp({onNotif, bookings=[]}{
+function ResidentApp({onNotif, bookings=[]}){
   const [tab,setTab]=useState("home");
   const [chat,setChat]=useState(false);
   const [sheet,setSheet]=useState(null);
