@@ -1262,45 +1262,34 @@ function ConciergeApp({pendingBookings, onConfirm, onDecline, onLogout, clientPr
         {notifs.filter(n=>n.status==="pending").length===0&&
           <div className="card" style={{textAlign:"center",color:"#9A8F7E",fontSize:12,cursor:"default"}}>✦ Aucune demande en attente</div>
         }
-        {notifs.map((n,i)=>(
-          <div className="notif-card" key={i}>
-            {n.isFiche?(
-              <div style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px 8px"}}>
-                <span style={{fontSize:16}}>📋</span>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:12,color:"#2E3C4D",fontWeight:400}}>Questionnaire reçu — {n.client}</div>
-                  <div style={{fontSize:10,color:"#1565C0",marginTop:2,fontWeight:300}}>Fiche pré-séjour complétée · Visible dans Clients</div>
-                </div>
-                <div style={{fontSize:9,color:"rgba(227,193,145,0.6)"}}>{n.time}</div>
-              </div>
-            ):
-            <div className="notif-hdr">
-              <span style={{fontSize:14}}>🔔</span>
-              <div className="notif-hdr-title">{n.client}</div>
-              <div style={{marginLeft:"auto",fontSize:9,color:"rgba(227,193,145,0.6)"}}>{n.time}</div>
-            </div>
-            <div className="notif-body">
-              <div className="notif-service">{n.service}</div>
-              {n.recap?.length>0&&<div className="notif-detail">
-                {n.recap.map((r,j)=>(
-                  <div className="notif-detail-row" key={j}>
-                    <span className="notif-detail-label">{r.l}</span>
-                    <span className="notif-detail-val">{r.v}</span>
-                  </div>
-                ))}
-              </div>}
-              {n.status==="pending"&&<div className="notif-actions">
-                <button className="notif-btn notif-accept" onClick={()=>confirmNotif(n.id)}>✓ Confirmer</button>
-                <button className="notif-btn notif-decline" onClick={()=>declineNotif(n.id)}>Décliner</button>
-              </div>}
-              {n.status==="accepted"&&<div style={{marginTop:10,display:"flex",alignItems:"center",gap:6}}>
-                <div style={{width:6,height:6,borderRadius:"50%",background:"#4CAF50"}}/>
-                <span style={{fontSize:10,color:"#2E7D32",letterSpacing:".06em"}}>Confirmé · Visible par le client</span>
-              </div>}
-              {n.status==="declined"&&<div style={{marginTop:10,fontSize:10,color:"#9A8F7E",letterSpacing:".06em"}}>Demande déclinée</div>}
-            </div>}
-          </div>
-        ))}
+    ):
+<>
+  <div className="notif-hdr">
+    <span style={{fontSize:14}}>🔔</span>
+    <div className="notif-hdr-title">{n.client}</div>
+    <div style={{marginLeft:"auto",fontSize:9,color:"rgba(227,193,145,0.6)"}}>{n.time}</div>
+  </div>
+  <div className="notif-body">
+    <div className="notif-service">{n.service}</div>
+    {n.recap?.length>0&&<div className="notif-detail">
+      {n.recap.map((r,j)=>(
+        <div className="notif-detail-row" key={j}>
+          <span className="notif-detail-label">{r.l}</span>
+          <span className="notif-detail-val">{r.v}</span>
+        </div>
+      ))}
+    </div>}
+    {n.status==="pending"&&<div className="notif-actions">
+      <button className="notif-btn notif-accept" onClick={()=>confirmNotif(n.id)}>✓ Confirmer</button>
+      <button className="notif-btn notif-decline" onClick={()=>declineNotif(n.id)}>Décliner</button>
+    </div>}
+    {n.status==="accepted"&&<div style={{marginTop:10,display:"flex",alignItems:"center",gap:6}}>
+      <div style={{width:6,height:6,borderRadius:"50%",background:"#4CAF50"}}/>
+      <span style={{fontSize:10,color:"#2E7D32",letterSpacing:".06em"}}>Confirmé · Visible par le client</span>
+    </div>}
+    {n.status==="declined"&&<div style={{marginTop:10,fontSize:10,color:"#9A8F7E",letterSpacing:".06em"}}>Demande déclinée</div>}
+  </div>
+</>
 
         {clientFiche&&<div style={{margin:"0 18px 8px",background:"#E3F2FD",borderRadius:14,padding:"14px 16px",border:"1px solid rgba(33,150,243,0.2)"}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
